@@ -1,0 +1,6 @@
+C:\Users\SONY\Source\Workspaces\PAYTPV\ApiPayTPV_Csharp\Api.PayTPVService\bin\Debug\Api.PayTPVService.dll.config
+C:\Users\SONY\Source\Workspaces\PAYTPV\ApiPayTPV_Csharp\Api.PayTPVService\bin\Debug\Api.PayTPVService.dll
+C:\Users\SONY\Source\Workspaces\PAYTPV\ApiPayTPV_Csharp\Api.PayTPVService\bin\Debug\Api.PayTPVService.pdb
+C:\Users\SONY\Source\Workspaces\PAYTPV\ApiPayTPV_Csharp\Api.PayTPVService\obj\Debug\Api.PayTPVService.csprojResolveAssemblyReference.cache
+C:\Users\SONY\Source\Workspaces\PAYTPV\ApiPayTPV_Csharp\Api.PayTPVService\obj\Debug\Api.PayTPVService.dll
+C:\Users\SONY\Source\Workspaces\PAYTPV\ApiPayTPV_Csharp\Api.PayTPVService\obj\Debug\Api.PayTPVService.pdb
