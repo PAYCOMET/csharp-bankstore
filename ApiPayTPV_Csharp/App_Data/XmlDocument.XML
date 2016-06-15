@@ -481,12 +481,12 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="T:ApiPayTPV_Csharp.Controllers.PayTVPApiController">
+        <member name="T:ApiPayTPV_Csharp.Controllers.PayTPVApiController">
             <summary>
             PayTVP Api
             </summary>
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.GetUserInfo(System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.GetUserInfo(System.String,System.String)">
             <summary>
             GEt user information
             </summary>
@@ -494,7 +494,7 @@
             <param name="tokenuser">Toekn for user </param>
             <returns></returns>
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.AddUser(System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.AddUser(System.String,System.String,System.String)">
             <summary>
             Add a card to PayTPV.  IMPORTANTES !!! This direct input must be activated by PayTPV.
             In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
@@ -504,7 +504,7 @@
             <param name="cvv">CVC2 Card code</param>
             <returns>transaction response</returns>
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.RemoveUser(System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.RemoveUser(System.String,System.String)">
             <summary>
             Removes a user through call soap PayTPV
             </summary>
@@ -512,7 +512,7 @@
             <param name="tokenpayuser">User Token PayTPV</param>
             <returns>Object A transaction response</returns>
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecutePurchase(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchase(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Execute a web service payment
             </summary>
@@ -526,7 +526,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecutePurchaseDcc(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseDcc(System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Execute a web service payment with DCC operational
             </summary>
@@ -539,7 +539,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ConfirmPurchaseDcc(System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ConfirmPurchaseDcc(System.String,System.String,System.String)">
             <summary>
             Confirm a payment by web service with DCC operational
             </summary>
@@ -549,7 +549,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecuteRefund(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecuteRefund(System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Executes a return of a payment web service
             </summary>
@@ -562,7 +562,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.CreateSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Create a subscription in PayTPV on a card.  IMPORTANTES !!! This direct input must be activated by PayTPV.
             In default input method card for PCI-DSS compliance should be CreateSubscriptionUrl or CreateSubscriptionToken
@@ -579,7 +579,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.EditSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.EditSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Modifies a subscription PayTPV on a card.
             </summary>
@@ -593,7 +593,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.RemoveSubscription(System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.RemoveSubscription(System.String,System.String)">
             <summary>
             Deletes a subscription PayTPV on a card.
             </summary>
@@ -602,7 +602,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.CreateSubscriptionToken(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionToken(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Create a subscription in PayTPV on a previously tokenized card.
             </summary>
@@ -617,7 +617,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.CreatePreauthorization(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreatePreauthorization(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Create a pre-authorization by web service
             </summary>
@@ -631,7 +631,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.PreauthorizationConfirm(System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.PreauthorizationConfirm(System.String,System.String,System.String,System.String)">
             <summary>
             Confirm a pre-authorization previously sent by web service
             </summary>
@@ -642,7 +642,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.PreauthorizationCancel(System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.PreauthorizationCancel(System.String,System.String,System.String,System.String)">
             <summary>
             Cancels a pre-authorization previously sent by web service
             </summary>
@@ -653,7 +653,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.DeferredPreauthorizationConfirm(System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationConfirm(System.String,System.String,System.String,System.String)">
             <summary>
             Confirm deferred preauthorization by web service. Once and authorized an operation deferred pre-authorization can be confirmed for the effective recovery within 72 hours; after that date, deferred pre-authorizations lose their validity.
             </summary>
@@ -664,7 +664,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.DeferredPreauthorizationCancel(System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationCancel(System.String,System.String,System.String,System.String)">
             <summary>
             Cancels a deferred preauthorization by web service.
             </summary>
@@ -675,7 +675,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.AddUserToken(System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.AddUserToken(System.String)">
             <summary>
             Add a user by using web service BankStore JET
             </summary>
@@ -683,7 +683,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecutePurchaseUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a execute_purchase under IFRAME / Fullscreen
             </summary>
@@ -696,7 +696,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecutePurchaseTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a execute_purchase_token under IFRAME / Fullscreen
             </summary>
@@ -711,7 +711,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.AddUserUrl(System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.AddUserUrl(System.String,System.String)">
             <summary>
             Returns the URL to launch a add_user under IFRAME / Fullscreen
             </summary>
@@ -720,7 +720,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.CreateSubscriptionUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a create_subscription under IFRAME / Fullscreen
             </summary>
@@ -735,7 +735,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.CreateSubscriptionTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a create_subscription_token under IFRAME / Fullscreen
             </summary>
@@ -752,7 +752,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.CreatePreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreatePreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a create_preauthorization under IFRAME / Fullscreen
             </summary>
@@ -765,7 +765,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.PreauthorizationConfirmUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.PreauthorizationConfirmUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a preauthorization_confirm under IFRAME / Fullscreen
             </summary>
@@ -780,7 +780,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.PreauthorizationCancelUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.PreauthorizationCancelUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a preauthorization_cancel under IFRAME / Fullscreen
             </summary>
@@ -795,7 +795,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecutePreauthorizationTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePreauthorizationTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a execute_preauthorization_token under IFRAME / Fullscreen
             </summary>
@@ -810,7 +810,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.DeferredPreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a deferred_preauthorization under IFRAME / Fullscreen
             </summary>
@@ -823,7 +823,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.DeferredPreauthorizationConfirmUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationConfirmUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a deferred_preauthorization_confirm under IFRAME / Fullscreen
             </summary>
@@ -838,7 +838,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.DeferredPreauthorizationCancelUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationCancelUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a deferred_preauthorization_cancel under IFRAME / Fullscreen
             </summary>
@@ -853,7 +853,7 @@
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTVPApiController.ExecutePurchaseRToken(System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseRToken(System.String,System.String,System.String,System.String,System.String)">
             <summary>
             
             </summary>
