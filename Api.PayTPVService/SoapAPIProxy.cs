@@ -16,7 +16,7 @@ namespace Api.PayTPVService
 {
     internal class SoapAPIProxy
     {
-        private static WebService ExampleAPI = new WebService("https://secure.paytpv.com/gateway/xml_bankstore.php?wsdl");    // DEFAULT location of the WebService, containing the WebMethods
+        private static WebService ExampleAPI = new WebService("https://secure.paytpv.com/gateway/xml-bankstore?wsdl");    // DEFAULT location of the WebService, containing the WebMethods
 
         public static void ChangeUrl(string webserviceEndpoint)
         {

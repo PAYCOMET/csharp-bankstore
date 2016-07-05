@@ -26,7 +26,7 @@ namespace ApiPayTPV_Csharp.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://secure.paytpv.com/gateway/xml_bankstore.php")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://secure.paytpv.com/gateway/xml-bankstore")]
         public string ApiPayTPV_Csharp_com_paytpv_secure_PAYTPV_BankStoreGatewayService {
             get {
                 return ((string)(this["ApiPayTPV_Csharp_com_paytpv_secure_PAYTPV_BankStoreGatewayService"]));

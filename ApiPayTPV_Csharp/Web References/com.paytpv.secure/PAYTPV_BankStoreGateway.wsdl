@@ -591,7 +591,7 @@
   <wsdl:service name="PAYTPV_BankStoreGatewayService">
     <documentation />
     <wsdl:port name="PAYTPV_BankStoreGatewayPort" binding="tns:PAYTPV_BankStoreGatewayBinding">
-      <soap:address location="https://secure.paytpv.com/gateway/xml_bankstore.php" />
+      <soap:address location="https://secure.paytpv.com/gateway/xml-bankstore" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
