@@ -26,7 +26,7 @@ namespace Api.PayTPVService.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://secure.paytpv.com/gateway/xml_bankstore.php")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://secure.paytpv.com/gateway/xml-bankstore")]
         public string Api_PayTPVService_com_paytpv_secure_PAYTPV_BankStoreGatewayService {
             get {
                 return ((string)(this["Api_PayTPVService_com_paytpv_secure_PAYTPV_BankStoreGatewayService"]));

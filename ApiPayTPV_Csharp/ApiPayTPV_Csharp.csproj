@@ -379,10 +379,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="https://secure.paytpv.com/gateway/xml_bankstore.php%3fwsdl">
+    <WebReferenceUrl Include="https://secure.paytpv.com/gateway/xml-bankstore%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\com.paytpv.secure\</RelPath>
-      <UpdateFromURL>https://secure.paytpv.com/gateway/xml_bankstore.php%3fwsdl</UpdateFromURL>
+      <UpdateFromURL>https://secure.paytpv.com/gateway/xml-bankstore%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

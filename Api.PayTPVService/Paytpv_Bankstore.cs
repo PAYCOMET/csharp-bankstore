@@ -27,8 +27,8 @@ namespace ApiPayTPV_Csharp.Controllers
             this.password = password;
             this.jetid = jetid;
             this.ipaddress = ipaddr;
-            this.endpoint = "https://secure.paytpv.com/gateway/xml_bankstore.php?wsdl";
-            this.endpointurl = "https://secure.paytpv.com/gateway/bnkgateway.php?";
+            this.endpoint = "https://secure.paytpv.com/gateway/xml-bankstore?wsdl";
+            this.endpointurl = "https://secure.paytpv.com/gateway/ifr-bankstore?";
         }
 
         /// <summary>
