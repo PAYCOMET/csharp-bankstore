@@ -110,7 +110,7 @@ namespace ApiPayTPV_Csharp.Controllers
                     result.data.Add("DS_CARD_TYPE", dsCardType);
                     result.data.Add("DS_CARD_I_COUNTRY_ISO3", card1CountryISO3);
                     result.data.Add("DS_EXPIRYDATE", cardExpiryDate);
-
+                    result.data.Add("DS_MERCHANT_PAN", ans);
                     result.RESULT = "OK";
                 }
 
@@ -1564,13 +1564,8 @@ namespace ApiPayTPV_Csharp.Controllers
                 {
                     operation.Secure3D = secure3d;
                 }
-                var check_user_exist = this.InfoUser(operation.IdUser, operation.TokenUser);
-                if (Convert.ToInt32(check_user_exist.DS_ERROR_ID) != 0)
-                {
-                    return check_user_exist;
-                }
-
-
+						
+			   
                 operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
                 string lastrequest = ComposeURLParams(operation, operation.Type);
 
