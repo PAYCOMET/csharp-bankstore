@@ -37,6 +37,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -47,6 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Service References\Services.BankStoreGatewayService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="SoapAPIProxy.cs" />
     <Compile Include="Paytpv_Bankstore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +77,61 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.add_userResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.execute_refundResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.info_userResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\Api.PayTPVService.Services.BankStoreGatewayService.remove_userResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Services.BankStoreGatewayService\PAYTPV_BankStoreGateway.wsdl" />
     <None Include="Web References\com.paytpv.secure\PAYTPV_BankStoreGateway.wsdl" />
     <None Include="Web References\com.paytpv.secure\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
@@ -91,6 +153,21 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Api_PayTPVService_com_paytpv_secure_PAYTPV_BankStoreGatewayService</CachedSettingsPropName>
     </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Services.BankStoreGatewayService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.BankStoreGatewayService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.BankStoreGatewayService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Services.BankStoreGatewayService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
