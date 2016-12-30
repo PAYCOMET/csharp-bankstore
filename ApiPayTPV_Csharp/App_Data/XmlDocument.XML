@@ -490,8 +490,8 @@
             <summary>
             GEt user information
             </summary>
-            <param name="idpayuser">Id of user</param>
-            <param name="tokenuser">Toekn for user </param>
+            <param name="idPayUser">Id of user</param>
+            <param name="tokenUser">Toekn for user </param>
             <returns></returns>
         </member>
         <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.AddUser(System.String,System.String,System.String)">
@@ -500,7 +500,7 @@
             In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
             </summary>
             <param name="pan">card number without spaces or dashes</param>
-            <param name="expdate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
+            <param name="expDate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
             <param name="cvv">CVC2 Card code</param>
             <returns>transaction response</returns>
         </member>
@@ -508,21 +508,22 @@
             <summary>
             Removes a user through call soap PayTPV
             </summary>
-            <param name="idpayuser">user ID PayTPV</param>
-            <param name="tokenpayuser">User Token PayTPV</param>
+            <param name="idPayUser">user ID PayTPV</param>
+            <param name="tokenPayUser">User Token PayTPV</param>
             <returns>Object A transaction response</returns>
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchase(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchase(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Execute a web service payment
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">unique identifier payment</param>
+            <param name="transReference">unique identifier payment</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="productdescription">Product Description Product Description</param>
+            <param name="productDescription">Product Description Product Description</param>
             <param name="owner">owner Cardholder</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
@@ -530,11 +531,11 @@
             <summary>
             Execute a web service payment with DCC operational
             </summary>
-            <param name="idpayuser">idpayuser User ID in PayTPV</param>
-            <param name="tokenpayuser">tokenpayuser user Token in PayTPV</param>
+            <param name="idPayUser">idPayUser User ID in PayTPV</param>
+            <param name="tokenPayUser">tokenPayUser user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">transreference unique identifier payment</param>
-            <param name="productdescription">Product Description Product Description</param>
+            <param name="transReference">transReference unique identifier payment</param>
+            <param name="productDescription">Product Description Product Description</param>
             <param name="owner">owner Cardholder</param>
             <returns>transaction response</returns>
             
@@ -543,9 +544,9 @@
             <summary>
             Confirm a payment by web service with DCC operational
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
-            <param name="dcccurrency">dcccurrency chosen currency transaction. It may be the product of PayTPV native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
-            <param name="dccsession">dccsession sent in the same session execute_purchase_dcc process.</param>
+            <param name="transReference">transReference unique identifier payment</param>
+            <param name="dccCurrency">dccCurrency chosen currency transaction. It may be the product of PayTPV native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
+            <param name="dccSession">dccSession sent in the same session execute_purchase_dcc process.</param>
             <returns>transaction response</returns>
             
         </member>
@@ -553,29 +554,30 @@
             <summary>
             Executes a return of a payment web service
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="authcode">AuthCode de la operación original a devolver</param>
+            <param name="authCode">AuthCode de la operación original a devolver</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Create a subscription in PayTPV on a card.  IMPORTANTES !!! This direct input must be activated by PayTPV.
             In default input method card for PCI-DSS compliance should be CreateSubscriptionUrl or CreateSubscriptionToken
             </summary>
             <param name="pan">card number without spaces or dashes</param>
-            <param name="expdate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
+            <param name="expDate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
             <param name="cvv">CVC2 Card code</param>
-            <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-            <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+            <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="periodicity">periodicity Frequency of subscription. In days.</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
@@ -583,10 +585,10 @@
             <summary>
             Modifies a subscription PayTPV on a card.
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
-            <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-            <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
+            <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+            <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
             <param name="periodicity">periodicity Frequency of subscription. In days.</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="execute">EXECUTE If the registration process involves the payment of the first installment value DS_EXECUTE should be 1. If you only want to discharge from the subscription without being paid the first installment (will run with the parameters sent) its value must be 0.</param>
@@ -597,37 +599,39 @@
             <summary>
             Deletes a subscription PayTPV on a card.
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionToken(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionToken(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Create a subscription in PayTPV on a previously tokenized card.
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
-            <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-            <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
+            <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+            <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="periodicity">periodicity Frequency of subscription. In days.</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreatePreauthorization(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreatePreauthorization(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Create a pre-authorization by web service
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="productdescription">Product Description Product Description</param>
+            <param name="productDescription">Product Description Product Description</param>
             <param name="owner">owner Cardholder</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
@@ -635,10 +639,10 @@
             <summary>
             Confirm a pre-authorization previously sent by web service
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
             
         </member>
@@ -646,10 +650,10 @@
             <summary>
             Cancels a pre-authorization previously sent by web service
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
             
         </member>
@@ -657,10 +661,10 @@
             <summary>
             Confirm deferred preauthorization by web service. Once and authorized an operation deferred pre-authorization can be confirmed for the effective recovery within 72 hours; after that date, deferred pre-authorizations lose their validity.
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
             
         </member>
@@ -668,10 +672,10 @@
             <summary>
             Cancels a deferred preauthorization by web service.
             </summary>
-            <param name="idpayuser">User ID in PayTPV</param>
-            <param name="tokenpayuser">user Token in PayTPV</param>
+            <param name="idPayUser">User ID in PayTPV</param>
+            <param name="tokenPayUser">user Token in PayTPV</param>
             <param name="amount">Amount of payment 1 € = 100</param>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
             
         </member>
@@ -679,35 +683,37 @@
             <summary>
             Add a user by using web service BankStore JET
             </summary>
-            <param name="jettoken">jettoken temporary user Token in PayTPV</param>
+            <param name="jetToken">jetToken temporary user Token in PayTPV</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a execute_purchase under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a execute_purchase_token under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
@@ -715,53 +721,56 @@
             <summary>
             Returns the URL to launch a add_user under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="lang">language transaction literals</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a create_subscription under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-            <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
+            <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+            <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
             <param name="periodicity">periodicity Frequency of subscription. In days.</param>
             <param name="lang">language transaction literals</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreateSubscriptionTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a create_subscription_token under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-            <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
+            <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+            <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
             <param name="periodicity">periodicity Frequency of subscription. In days.</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreatePreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.CreatePreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a create_preauthorization under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
@@ -769,14 +778,14 @@
             <summary>
             Returns the URL to launch a preauthorization_confirm under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
             <returns>transaction response</returns>
             
         </member>
@@ -784,42 +793,44 @@
             <summary>
             Returns the URL to launch a preauthorization_cancel under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePreauthorizationTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePreauthorizationTokenUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a execute_preauthorization_token under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
-        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.DeferredPreauthorizationUrl(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Returns the URL to launch a deferred_preauthorization under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="scoring">Risk scoring value of the transaction. Between 0 and 100</param>
             <returns>transaction response</returns>
             
         </member>
@@ -827,14 +838,14 @@
             <summary>
             Returns the URL to launch a deferred_preauthorization_confirm under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
             <returns>transaction response</returns>
             
         </member>
@@ -842,702 +853,27 @@
             <summary>
             Returns the URL to launch a deferred_preauthorization_cancel under IFRAME / Fullscreen
             </summary>
-            <param name="transreference">transreference unique identifier payment</param>
+            <param name="transReference">transReference unique identifier payment</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="currency">currency identifier transaction currency</param>
-            <param name="iduser">iduser unique identifier system registered user.</param>
-            <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+            <param name="idUser">idUser unique identifier system registered user.</param>
+            <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
             <param name="lang">language transaction literals</param>
             <param name="description">description Operation description</param>
-            <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+            <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
             <returns>transaction response</returns>
             
         </member>
         <member name="M:ApiPayTPV_Csharp.Controllers.PayTPVApiController.ExecutePurchaseRToken(System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            
+            Executes a payment for web service with the "payment by reference" for the migration to PayTpv
             </summary>
-            <param name="amount"></param>
-            <param name="transreference"></param>
-            <param name="rtoken"></param>
-            <param name="currency"></param>
-            <param name="productdescription"></param>
-            <returns></returns>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.#ctor">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_userCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_user_tokenCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.info_userCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_userCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchaseCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_dccCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.confirm_purchase_dccCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_refundCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscriptionCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.edit_subscriptionCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_subscriptionCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscription_tokenCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_preauthorizationCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_confirmCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_cancelCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_confirmCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_cancelCompleted">
-            <remarks/>
-        </member>
-        <member name="E:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_rtokenCompleted">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_user(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_userAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_userAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_user_token(System.String,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_user_tokenAsync(System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.add_user_tokenAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.info_user(System.String,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.info_userAsync(System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.info_userAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_user(System.String,System.String,System.String,System.String,System.String,System.String,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_userAsync(System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_userAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchaseAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchaseAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_dcc(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_dccAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_dccAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.confirm_purchase_dcc(System.String,System.String,System.String@,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.confirm_purchase_dccAsync(System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.confirm_purchase_dccAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_refund(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String,System.String,System.String,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_refundAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_refundAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String@,System.String,System.String@,System.String@,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscriptionAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscriptionAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.edit_subscription(System.String,System.String,System.String@,System.String@,System.String,System.String,System.String,System.String@,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.edit_subscriptionAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.edit_subscriptionAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_subscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_subscriptionAsync(System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.remove_subscriptionAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscription_token(System.String,System.String,System.String@,System.String@,System.String,System.String,System.String@,System.String,System.String@,System.String@,System.String,System.String,System.String,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscription_tokenAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_subscription_tokenAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_preauthorization(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_preauthorizationAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.create_preauthorizationAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_confirm(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String,System.String,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_confirmAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_confirmAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_cancel(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String,System.String,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_cancelAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.preauthorization_cancelAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_confirm(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String,System.String,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_confirmAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_confirmAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_cancel(System.String,System.String,System.String,System.String,System.String@,System.String@,System.String,System.String,System.String@,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_cancelAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.deferred_preauthorization_cancelAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_rtoken(System.String,System.String,System.String@,System.String@,System.String,System.String@,System.String,System.String,System.String@,System.String@,System.String@)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_rtokenAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.execute_purchase_rtokenAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
-            <remarks/>
-        </member>
-        <member name="M:ApiPayTPV_Csharp.com.paytpv.secure.PAYTPV_BankStoreGatewayService.CancelAsync(System.Object)">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.add_userCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.add_userCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.add_userCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.add_userCompletedEventArgs.DS_TOKEN_USER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.add_userCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.add_user_tokenCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.add_user_tokenCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.add_user_tokenCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.add_user_tokenCompletedEventArgs.DS_TOKEN_USER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.add_user_tokenCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs.DS_CARD_BRAND">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs.DS_CARD_TYPE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs.DS_CARD_I_COUNTRY_ISO3">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.info_userCompletedEventArgs.DS_EXPIRYDATE">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.remove_userCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.remove_userCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.remove_userCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.remove_userCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.DS_MERCHANT_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchaseCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_SESSION">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_CURRENCYISO3">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_CURRENCYNAME">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_EXCHANGE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_MARKUP">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_MERCHANT_DCC_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_dccCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.DS_MERCHANT_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.confirm_purchase_dccCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventArgs.DS_MERCHANT_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_refundCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_SUBSCRIPTION_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_SUBSCRIPTION_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_SUBSCRIPTION_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_TOKEN_USER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscriptionCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_IDUSER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_TOKEN_USER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_SUBSCRIPTION_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_SUBSCRIPTION_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.edit_subscriptionCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.remove_subscriptionCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.remove_subscriptionCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.remove_subscriptionCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.remove_subscriptionCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_IDUSER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_TOKEN_USER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_SUBSCRIPTION_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_SUBSCRIPTION_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_SUBSCRIPTION_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_subscription_tokenCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.DS_MERCHANT_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.create_preauthorizationCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_confirmCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.preauthorization_cancelCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_confirmCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.DS_MERCHANT_AUTHCODE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.deferred_preauthorization_cancelCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.DS_MERCHANT_AMOUNT">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.DS_MERCHANT_ORDER">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.DS_MERCHANT_CURRENCY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.DS_MERCHANT_CARDCOUNTRY">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.DS_RESPONSE">
-            <remarks/>
-        </member>
-        <member name="P:ApiPayTPV_Csharp.com.paytpv.secure.execute_purchase_rtokenCompletedEventArgs.DS_ERROR_ID">
-            <remarks/>
+            <param name="amount">Amount of payment 1 € = 100</param>
+            <param name="transReference">transReference unique identifier payment</param>
+            <param name="rToken">Original card reference stored in old system</param>
+            <param name="currency">currency identifier transaction currency</param>
+            <param name="productDescription">description Operation description</param>
+            <returns>transaction response</returns>
         </member>
     </members>
 </doc>

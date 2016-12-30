@@ -1,9 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ApiPayTPV_Csharp.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
   <Profiles />
-  <Settings>
-    <Setting Name="ApiPayTPV_Csharp_com_paytpv_secure_PAYTPV_BankStoreGatewayService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">https://secure.paytpv.com/gateway/xml-bankstore</Value>
-    </Setting>
-  </Settings>
+  <Settings />
 </SettingsFile>
