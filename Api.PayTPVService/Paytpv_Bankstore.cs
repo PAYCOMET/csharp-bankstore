@@ -1,34 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Security.Cryptography;
-using System.Text;
-using Api.PayTPVService.com.paytpv.secure;
 using System.Text.RegularExpressions;
 using System.Net;
+using Api.PayTPVService.Services.BankStoreGatewayService;
+using System.Configuration;
+using Api.PayTPVService.Responses;
+using Api.PayTPVService.IFrame;
+using Api.PayTPVService.Utils;
 
-namespace ApiPayTPV_Csharp.Controllers
+namespace Api.PayTPVService
 {
     public class Paytpv_Bankstore
     {
-        private Regex r = new Regex(@"/\s+/");
+        private Regex regEx = new Regex(@"\s+");
         private string merchantCode;
         private string terminal;
         private string password;
         private string endpoint;
-        private string endpointurl;
-        private string jetid;
-        private string ipaddress;
-        public Paytpv_Bankstore(string merchantcode, string terminal, string password, string ipaddr, string jetid = null)
+        private string endpointUrl;
+        private string jetId;
+        private string ipAddress;
+
+        public Paytpv_Bankstore(string merchantCode, string terminal, string password, string ipAddr, string jetId = null)
         {
-            this.merchantCode = merchantcode;
+            this.merchantCode = merchantCode;
             this.terminal = terminal;
             this.password = password;
-            this.jetid = jetid;
-            this.ipaddress = ipaddr;
-            this.endpoint = "https://secure.paytpv.com/gateway/xml-bankstore?wsdl";
-            this.endpointurl = "https://secure.paytpv.com/gateway/ifr-bankstore?";
+            this.jetId = jetId;
+            this.ipAddress = ipAddr;
+            this.endpoint = ConfigurationManager.AppSettings["EndPointWSDL"];
+            this.endpointUrl = ConfigurationManager.AppSettings["EndPointUrl"];
         }
 
         /// <summary>
@@ -36,43 +39,49 @@ namespace ApiPayTPV_Csharp.Controllers
         /// In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
-        /// <param name="expdate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
+        /// <param name="expDate">expDate expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
         /// <param name="cvv">CVC2 Card code</param>
         /// <returns>transaction response</returns>
-        public stdClass AddUser(string pan, string expdate, string cvv)
+        public BankstoreServResponse AddUser(string pan, string expDate, string cvv)
         {
+            BankstoreServResponse result = new BankstoreServResponse();
+            pan = regEx.Replace(pan, string.Empty);
+            expDate = regEx.Replace(expDate, string.Empty);
+            cvv = regEx.Replace(cvv, string.Empty);
 
-
-            stdClass result = new stdClass();
-            r.Replace(pan, "");
-            r.Replace(expdate, "");
-            r.Replace(cvv, "");
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + pan + cvv + this.terminal + this.password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + pan + cvv + terminal + password);
+            var ip = ipAddress;
             try
             {
-                
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string dsToken, errroId;
-                var ans = client.add_user(this.merchantCode, this.terminal, pan, expdate, cvv, signature, ip, "Test name", out dsToken, out errroId);
 
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
 
-                result.data = new Dictionary<string, object>();
-                result.data.Add("DS_TOKEN_USER", dsToken);
-                result.data.Add("DS_IDUSER", ans);
-                result.DS_ERROR_ID = errroId;
-                result.RESULT = "OK";
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
+                string tokenUser, dsErrorId = string.Empty;
+                string idUser = wsProxy.add_user(merchantCode, terminal, pan, expDate, cvv, signature, ip, "Test name", out tokenUser, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
+                }
+                else
+                {
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_IDUSER", idUser);
+                    result.Data.Add("DS_TOKEN_USER", tokenUser);
+                    result.Result = "OK";
                 }
                 return result;
             }
-            catch (Exception ex)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -80,46 +89,52 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the user information stored in a call PayTPV by soap
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">tokenpayuser user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">tokenPayUser user Token in PayTPV</param>
         /// <returns>transaction response</returns>
-        public stdClass InfoUser(string idpayuser, string tokenpayuser)
+        public BankstoreServResponse InfoUser(string idPayUser, string tokenPayUser)
         {
 
-            stdClass result = new stdClass();
-            r.Replace(idpayuser, "");
-            r.Replace(tokenpayuser, "");
+            BankstoreServResponse result = new BankstoreServResponse();
+            idPayUser = regEx.Replace(idPayUser, string.Empty);
+            tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
 
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + this.password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string dscardBrand, dsCardType, card1CountryISO3, cardExpiryDate, errroId;
-                var ans = client.info_user(this.merchantCode, this.terminal, idpayuser, tokenpayuser, signature, ip, out errroId, out dscardBrand, out dsCardType, out card1CountryISO3, out cardExpiryDate);
-                if (Convert.ToInt32(errroId) > 0)
+                string dscardBrand, dsCardType, card1CountryISO3, cardExpiryDate, dsErrorId = string.Empty;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string merchantPAN = wsProxy.info_user(merchantCode, terminal, idPayUser, tokenPayUser, signature, ip, out dsErrorId,
+                    out dscardBrand, out dsCardType, out card1CountryISO3, out cardExpiryDate);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = errroId;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_CARD_BRAND", dscardBrand);
-                    result.data.Add("DS_CARD_TYPE", dsCardType);
-                    result.data.Add("DS_CARD_I_COUNTRY_ISO3", card1CountryISO3);
-                    result.data.Add("DS_EXPIRYDATE", cardExpiryDate);
-                    result.data.Add("DS_MERCHANT_PAN", ans);
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_PAN", merchantPAN);
+                    result.Data.Add("DS_CARD_BRAND", dscardBrand);
+                    result.Data.Add("DS_CARD_TYPE", dsCardType);
+                    result.Data.Add("DS_CARD_I_COUNTRY_ISO3", card1CountryISO3);
+                    result.Data.Add("DS_EXPIRYDATE", cardExpiryDate);
+                    result.Result = "OK";
                 }
 
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -127,39 +142,44 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Removes a user through call soap PayTPV
         /// </summary>
-        /// <param name="idpayuser">user ID PayTPV</param>
-        /// <param name="tokenpayuser">User Token PayTPV</param>
+        /// <param name="idPayUser">user ID PayTPV</param>
+        /// <param name="tokenPayUser">User Token PayTPV</param>
         /// <returns>Object A transaction response</returns>
-        public stdClass RemoveUser(string idpayuser, string tokenpayuser)
+        public BankstoreServResponse RemoveUser(string idPayUser, string tokenPayUser)
         {
-            stdClass result = new stdClass();
-            r.Replace(idpayuser, "");
-            r.Replace(tokenpayuser, "");
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + this.password);
-            var ip = this.ipaddress;
+            BankstoreServResponse result = new BankstoreServResponse();
+            idPayUser = regEx.Replace(idPayUser, string.Empty);
+            tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID;
-                var ans = client.remove_user(merchantCode, terminal, idpayuser, tokenpayuser, signature, ip, out DS_ERROR_ID);
-                result.data = new Dictionary<string, object>();
-                result.data["DS_RESPONSE"] = ans;
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId = string.Empty;
+                var dsResponse = wsProxy.remove_user(merchantCode, terminal, idPayUser, tokenPayUser, signature, ip, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;                    
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["DS_RESPONSE"] = dsResponse;
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -167,52 +187,56 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Execute a web service payment
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">unique identifier payment</param>
+        /// <param name="transReference">unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="productdescription">Product Description Product Description</param>
+        /// <param name="productDescription">Product Description Product Description</param>
         /// <param name="owner">owner Cardholder</param>
         /// <returns>transaction response</returns>
-        public stdClass ExecutePurchase(string idpayuser, string tokenpayuser, string amount, string transreference, string currency, string productdescription, string owner)
+        public BankstoreServResponse ExecutePurchase(string idPayUser, string tokenPayUser, string amount, string transReference, string currency, string productDescription = null, string owner = null, string scoring = null)
         {
-            stdClass result = new stdClass();
-            r.Replace(idpayuser, "");
-            r.Replace(tokenpayuser, "");
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + amount + transreference + this.password);
-            var ip = this.ipaddress;
+            BankstoreServResponse result = new BankstoreServResponse();
+            idPayUser = regEx.Replace(idPayUser, string.Empty);
+            tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + transReference + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE;
-                var ans = client.execute_purchase(this.merchantCode, this.terminal, idpayuser, 
-                    tokenpayuser, ref amount, ref transreference, ref currency, signature, 
-                    this.ipaddress, productdescription, owner, "0", out DS_MERCHANT_CARDCOUNTRY, out DS_RESPONSE, out DS_ERROR_ID);
+                string dsErrorId, dsMerchantCardCountry, dsResponse, dsMerchantData = string.Empty;
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string authCode = wsProxy.execute_purchase(merchantCode, terminal, idPayUser, tokenPayUser, ref amount, ref transReference, ref currency, signature, ipAddress,
+                    productDescription, owner, scoring, dsMerchantData, out dsMerchantCardCountry, out dsResponse, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_MERCHANT_CURRENCY", currency);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", ans);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", currency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -220,77 +244,62 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Execute a web service payment with DCC operational
         /// </summary>
-        /// <param name="idpayuser">idpayuser User ID in PayTPV</param>
-        /// <param name="tokenpayuser">tokenpayuser user Token in PayTPV</param>
+        /// <param name="idPayUser">idPayUser User ID in PayTPV</param>
+        /// <param name="tokenPayUser">tokenPayUser user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
-        /// <param name="productdescription">Product Description Product Description</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
+        /// <param name="productDescription">Product Description Product Description</param>
         /// <param name="owner">owner Cardholder</param>
         /// <returns>transaction response</returns>
-        public stdClass ExecutePurchaseDcc(string idpayuser, string tokenpayuser, string amount, string transreference, string productdescription = "false", string owner = "false")
+        public BankstoreServResponse ExecutePurchaseDcc(string idPayUser, string tokenPayUser, string amount, string transReference, string productDescription = null, string owner = null)
         {
-            stdClass result = new stdClass();
-            r.Replace(idpayuser, "");
-            r.Replace(tokenpayuser, "");
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + amount + transreference + this.password);
-            var ip = this.ipaddress;
+            BankstoreServResponse result = new BankstoreServResponse();
+            idPayUser = regEx.Replace(idPayUser, string.Empty);
+            tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + transReference + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_DCC_SESSION, DS_MERCHANT_DCC_CURRENCY, DS_MERCHANT_DCC_CURRENCYISO3, DS_MERCHANT_DCC_CURRENCYNAME;
-                string DS_MERCHANT_DCC_EXCHANGE, DS_MERCHANT_DCC_AMOUNT, DS_MERCHANT_DCC_MARKUP, DS_MERCHANT_DCC_CARDCOUNTRY, DS_RESPONSE;
-                var ans = client.execute_purchase_dcc(
-                     this.merchantCode,
-                     this.terminal,
-                     idpayuser,
-                     tokenpayuser,
-                    ref amount,
-                    ref transreference,
-                     signature,
-                     ip,
-                     productdescription,
-                     owner,
-                    out  DS_MERCHANT_DCC_SESSION,
-                    out  DS_MERCHANT_DCC_CURRENCY,
-                    out  DS_MERCHANT_DCC_CURRENCYISO3,
-                    out  DS_MERCHANT_DCC_CURRENCYNAME,
-                    out  DS_MERCHANT_DCC_EXCHANGE,
-                    out  DS_MERCHANT_DCC_AMOUNT,
-                    out  DS_MERCHANT_DCC_MARKUP,
-                    out  DS_MERCHANT_DCC_CARDCOUNTRY,
-                    out  DS_RESPONSE,
-                    out  DS_ERROR_ID);
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantDccSession, dsMerchantDccCurrency, dsMerchantDccCurrencyIso3, dsMerchantDccCurrencyName = string.Empty;
+                string dsMerchantDccExchange, dsMerchantDccAmount, dsMerchantDccMarkup, dsMerchantDccCardCountry, dsResponse = string.Empty;
+                string merchantCurrency = wsProxy.execute_purchase_dcc(merchantCode, terminal, idPayUser, tokenPayUser, ref amount, ref transReference, signature, ip,
+                    productDescription, owner, out dsMerchantDccSession, out dsMerchantDccCurrency, out dsMerchantDccCurrencyIso3, out dsMerchantDccCurrencyName,
+                    out dsMerchantDccExchange, out dsMerchantDccAmount, out dsMerchantDccMarkup, out dsMerchantDccCardCountry, out dsResponse, out dsErrorId);
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_MERCHANT_DCC_CURRENCY", DS_MERCHANT_DCC_CURRENCY);
-                    result.data.Add("DS_MERCHANT_DCC_SESSION", DS_MERCHANT_DCC_SESSION);
-                    result.data.Add("DS_MERCHANT_DCC_CURRENCYISO3", DS_MERCHANT_DCC_CURRENCYISO3);
-                    result.data.Add("DS_MERCHANT_DCC_CURRENCYNAME", DS_MERCHANT_DCC_CURRENCYNAME);
-                    result.data.Add("DS_MERCHANT_DCC_EXCHANGE", DS_MERCHANT_DCC_EXCHANGE);
-                    result.data.Add("DS_MERCHANT_DCC_AMOUNT", DS_MERCHANT_DCC_AMOUNT);
-                    result.data.Add("DS_MERCHANT_DCC_MARKUP", DS_MERCHANT_DCC_MARKUP);
-                    result.data.Add("DS_MERCHANT_DCC_CARDCOUNTRY", DS_MERCHANT_DCC_CARDCOUNTRY);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", ans);
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", merchantCurrency);
+                    result.Data.Add("DS_MERCHANT_DCC_SESSION", dsMerchantDccSession);
+                    result.Data.Add("DS_MERCHANT_DCC_CURRENCY", dsMerchantDccCurrency);
+                    result.Data.Add("DS_MERCHANT_DCC_CURRENCYISO3", dsMerchantDccCurrencyIso3);
+                    result.Data.Add("DS_MERCHANT_DCC_CURRENCYNAME", dsMerchantDccCurrencyName);
+                    result.Data.Add("DS_MERCHANT_DCC_EXCHANGE", dsMerchantDccExchange);
+                    result.Data.Add("DS_MERCHANT_DCC_AMOUNT", dsMerchantDccAmount);
+                    result.Data.Add("DS_MERCHANT_DCC_MARKUP", dsMerchantDccMarkup);
+                    result.Data.Add("DS_MERCHANT_DCC_CARDCOUNTRY", dsMerchantDccCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -298,48 +307,51 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Confirm a payment by web service with DCC operational
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
-        /// <param name="dcccurrency">dcccurrency chosen currency transaction. It may be the product of PayTPV native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
-        /// <param name="dccsession">dccsession sent in the same session execute_purchase_dcc process.</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
+        /// <param name="dccCurrency">dcccurrency chosen currency transaction. It may be the product of PayTPV native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
+        /// <param name="dccSession">dccsession sent in the same session execute_purchase_dcc process.</param>
         /// <returns>transaction response</returns>
-        public stdClass ConfirmPurchaseDcc(string transreference, string dcccurrency, string dccsession)
+        public BankstoreServResponse ConfirmPurchaseDcc(string transReference, string dccCurrency, string dccSession)
         {
-            stdClass result = new stdClass();
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + this.terminal + transreference + dcccurrency + dccsession);
-            var ip = this.ipaddress;
+            BankstoreServResponse result = new BankstoreServResponse();
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + terminal + transReference + dccCurrency + dccSession + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY;
-                string DS_MERCHANT_CURRENCY, DS_RESPONSE;
-                var ans = client.confirm_purchase_dcc(this.merchantCode, this.terminal, ref transreference, dcccurrency, dccsession, signature,
-                    out  DS_MERCHANT_CURRENCY, out  DS_MERCHANT_AUTHCODE, out DS_MERCHANT_CARDCOUNTRY, out DS_RESPONSE, out DS_ERROR_ID);
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry = string.Empty;
+                string dsMerchantCurrency, dsResponse = string.Empty;
+                string dsMerchantAmount = wsProxy.confirm_purchase_dcc(merchantCode, terminal, ref transReference, dccCurrency, dccSession, signature,
+                    out dsMerchantCurrency, out dsMerchantAuthCode, out dsMerchantCardCountry, out dsResponse, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
-                    result.data.Add("DS_MERCHANT_CURRENCY", DS_MERCHANT_CURRENCY);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_AMOUNT", ans);
-                    result.data.Add("DS_MERCHANT_CURRENCY", dcccurrency);
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", dsMerchantAmount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", dsMerchantCurrency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -347,47 +359,50 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Executes a return of a payment web service
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="authcode">AuthCode de la operación original a devolver</param>
+        /// <param name="authCode">authCode de la operación original a devolver</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <returns>transaction response</returns>
-        public stdClass ExecuteRefund(string idpayuser, string tokenpayuser, string transreference, string currency, string authcode, string amount = null)
+        public BankstoreServResponse ExecuteRefund(string idPayUser, string tokenPayUser, string transReference, string currency, string authCode, string amount = null)
         {
-            stdClass result = new stdClass();
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + authcode + transreference + password);
-            var ip = this.ipaddress;
+            BankstoreServResponse result = new BankstoreServResponse();
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + authCode + transReference + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId = string.Empty;
 
-                var ans = client.execute_refund(this.merchantCode, this.terminal, idpayuser, tokenpayuser, ref authcode, ref transreference, ref currency, signature, ip, amount, out DS_ERROR_ID);
+                string dsResponse = wsProxy.execute_refund(merchantCode, terminal, idPayUser, tokenPayUser, ref authCode, ref transReference, ref currency, signature, ip, amount, out dsErrorId);
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", currency);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", authcode);
-                    result.data.Add("DS_RESPONSE", ans);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", currency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -397,74 +412,65 @@ namespace ApiPayTPV_Csharp.Controllers
         /// In default input method card for PCI-DSS compliance should be CreateSubscriptionUrl or CreateSubscriptionToken
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
-        /// <param name="expdate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
+        /// <param name="expDate">expDate expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
         /// <param name="cvv">CVC2 Card code</param>
-        /// <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-        /// <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+        /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
         /// <returns>transaction response</returns>
-        public stdClass CreateSubscription(string pan, string expdate, string cvv, string startdate, string enddate, string transreference, string periodicity, string amount, string currency)
+        public BankstoreServResponse CreateSubscription(string pan, string expDate, string cvv, string startDate, string endDate, string transReference, string periodicity, string amount, string currency, string scoring = null)
         {
-            stdClass result = new stdClass();
-            r.Replace(pan, ""); r.Replace(expdate, ""); r.Replace(cvv, "");
+            BankstoreServResponse result = new BankstoreServResponse();
+            pan = regEx.Replace(pan, string.Empty);
+            expDate = regEx.Replace(expDate, string.Empty);
+            cvv = regEx.Replace(cvv, string.Empty);
 
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + pan + cvv + this.terminal + amount + currency + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + pan + cvv + terminal + amount + currency + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_TOKEN_USER, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsTokenUser, dsMerchantAuthCode, dsMerchantCardCountry = string.Empty;
 
-                var ans = client.create_subscription(
-                    this.merchantCode,
-                    this.terminal,
-                    pan,
-                    expdate,
-                    cvv,
-                    startdate,
-                    enddate,
-                    ref transreference,
-                    periodicity,
-                    ref amount,
-                    ref currency,
-                    signature,
-                    ip,
-                     "0",
-                    "DS_MERCHANT_CARDHOLDERNAME",
-                     "DS_MERCHANT_SCORING",
-                    out DS_TOKEN_USER,
-                    out DS_MERCHANT_AUTHCODE,
-                     out DS_MERCHANT_CARDCOUNTRY,
-                     out DS_ERROR_ID);
+                string dsExecute = string.Empty;
+                string dsMerchantCardHolderName = string.Empty;
+                string dsMerchantData = string.Empty;
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                string dsIdUser = wsProxy.create_subscription(merchantCode, terminal, pan, expDate, cvv, startDate, endDate,
+                    ref transReference, periodicity, ref amount, ref currency, signature, ip, dsExecute, dsMerchantCardHolderName,
+                     scoring, dsMerchantData, out dsTokenUser, out dsMerchantAuthCode, out dsMerchantCardCountry, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_TOKEN_USER", DS_TOKEN_USER);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
-                    result.data.Add("DS_IDUSER", ans);
-                    result.data.Add("DS_SUBSCRIPTION_AMOUNT", amount);
-                    result.data.Add("DS_SUBSCRIPTION_ORDER", transreference);
-                    result.data.Add("DS_SUBSCRIPTION_CURRENCY", currency);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_IDUSER", dsIdUser);
+                    result.Data.Add("DS_TOKEN_USER", dsTokenUser);
+                    result.Data.Add("DS_SUBSCRIPTION_AMOUNT", amount);
+                    result.Data.Add("DS_SUBSCRIPTION_ORDER", transReference);
+                    result.Data.Add("DS_SUBSCRIPTION_CURRENCY", currency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -472,57 +478,58 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Modifies a subscription PayTPV on a card.
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
-        /// <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-        /// <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+        /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="execute">EXECUTE If the registration process involves the payment of the first installment value DS_EXECUTE should be 1. If you only want to discharge from the subscription without being paid the first installment (will run with the parameters sent) its value must be 0.</param>
         /// <returns>transaction response</returns>
-        public stdClass EditSubscription(string idpayuser, string tokenpayuser, string startdate, string enddate, string periodicity, string amount, string execute)
+        public BankstoreServResponse EditSubscription(string idPayUser, string tokenPayUser, string startDate, string endDate, string periodicity, string amount, string execute)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + amount + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_CARDCOUNTRY, DS_MERCHANT_AUTHCODE, DS_SUBSCRIPTION_CURRENCY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantCardCountry, dsMerchantAuthCode, dsSubscriptionCurrency = string.Empty;
 
-                var ans = client.edit_subscription(this.merchantCode, this.terminal, ref idpayuser, ref tokenpayuser,
-                    startdate, enddate, periodicity, ref amount, signature, execute, ip, out DS_SUBSCRIPTION_CURRENCY, out DS_MERCHANT_AUTHCODE,
-                    out DS_MERCHANT_CARDCOUNTRY, out DS_ERROR_ID);
+                string dsSubscriptionOrder = wsProxy.edit_subscription(merchantCode, terminal, ref idPayUser, ref tokenPayUser,
+                    startDate, endDate, periodicity, ref amount, signature, execute, ip, out dsSubscriptionCurrency,
+                    out dsMerchantAuthCode, out dsMerchantCardCountry, out dsErrorId);
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
+                    result.Data = new Dictionary<string, string>();
 
-                    result.data.Add("DS_IDUSER", idpayuser);
-                    result.data.Add("DS_TOKEN_USER", tokenpayuser);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
-                    result.data.Add("DS_IDUSER", ans);
-                    result.data.Add("DS_SUBSCRIPTION_AMOUNT", amount);
-                    result.data.Add("DS_SUBSCRIPTION_ORDER", ans);
-                    result.data.Add("DS_SUBSCRIPTION_CURRENCY", DS_SUBSCRIPTION_CURRENCY);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Data.Add("DS_IDUSER", idPayUser);
+                    result.Data.Add("DS_TOKEN_USER", tokenPayUser);
+                    result.Data.Add("DS_SUBSCRIPTION_AMOUNT", amount);
+                    result.Data.Add("DS_SUBSCRIPTION_ORDER", dsSubscriptionOrder);
+                    result.Data.Add("DS_SUBSCRIPTION_CURRENCY", dsSubscriptionCurrency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -530,43 +537,44 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Deletes a subscription PayTPV on a card.
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <returns>transaction response</returns>
-        public stdClass RemoveSubscription(string idpayuser, string tokenpayuser)
+        public BankstoreServResponse RemoveSubscription(string idPayUser, string tokenPayUser)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId = string.Empty;
 
-                var ans = client.remove_subscription(this.merchantCode, this.terminal, idpayuser, tokenpayuser, signature, ip, out DS_ERROR_ID);
+                string dsResponse = wsProxy.remove_subscription(merchantCode, terminal, idPayUser, tokenPayUser, signature, ip, out dsErrorId);
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-
-                    result.data.Add("DS_RESPONSE", ans);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_RESPONSE", dsResponse);
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -574,56 +582,63 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Create a subscription in PayTPV on a previously tokenized card.
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
-        /// <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-        /// <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+        /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
         /// <returns>transaction response</returns>
-        public stdClass CreateSubscriptionToken(string idpayuser, string tokenpayuser, string startdate, string enddate, string transreference, string periodicity, string amount, string currency)
+        public BankstoreServResponse CreateSubscriptionToken(string idPayUser, string tokenPayUser, string startDate, string endDate, string transReference, string periodicity, string amount, string currency, string scoring = null)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + amount + currency + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount
+                + currency + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_CARDCOUNTRY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
 
-                var ans = client.create_subscription_token(this.merchantCode, this.terminal, ref idpayuser, ref tokenpayuser, startdate, enddate, ref transreference, periodicity, ref amount, ref currency,
-                    signature, ip, "DS_MERCHANT_SCORING", out DS_MERCHANT_CARDCOUNTRY, out DS_ERROR_ID);
+                string dsErrorId, dsMerchantCardCountry = string.Empty;
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                string dsMerchantData = string.Empty;
+
+                string authCode = wsProxy.create_subscription_token(merchantCode, terminal, ref idPayUser, ref tokenPayUser, startDate,
+                    endDate, ref transReference, periodicity, ref amount, ref currency, signature, ip, scoring, dsMerchantData,
+                    out dsMerchantCardCountry, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_IDUSER", idpayuser);
-                    result.data.Add("DS_TOKEN_USER", tokenpayuser);
-                    result.data.Add("DS_SUBSCRIPTION_AMOUNT", amount);
-                    result.data.Add("DS_SUBSCRIPTION_ORDER", transreference);
-                    result.data.Add("DS_SUBSCRIPTION_CURRENCY", currency);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", ans);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_IDUSER", idPayUser);
+                    result.Data.Add("DS_TOKEN_USER", tokenPayUser);
+                    result.Data.Add("DS_SUBSCRIPTION_AMOUNT", amount);
+                    result.Data.Add("DS_SUBSCRIPTION_ORDER", transReference);
+                    result.Data.Add("DS_SUBSCRIPTION_CURRENCY", currency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
 
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -631,55 +646,60 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Create a pre-authorization by web service
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="productdescription">Product Description Product Description</param>
+        /// <param name="productDescription">Product Description Product Description</param>
         /// <param name="owner">owner Cardholder</param>
         /// <returns>transaction response</returns>
-        public stdClass CreatePreauthorization(string idpayuser, string tokenpayuser, string amount, string transreference, string currency, string productdescription = "false", string owner = "false")
+        public BankstoreServResponse CreatePreauthorization(string idPayUser, string tokenPayUser, string amount, string transReference, string currency, string productDescription = null, string owner = null, string scoring = null)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + amount + transreference + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount
+                + transReference + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY, DS_MERCHANT_AUTHCODE;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantCardCountry, dsResponse = string.Empty;
 
-                var ans = client.create_preauthorization
-                    (this.merchantCode, this.terminal, idpayuser, tokenpayuser, ref  amount, ref  transreference,
-                    ref  currency, signature, ip, productdescription, owner, "DS_MERCHANT_SCORING", out  DS_MERCHANT_CARDCOUNTRY, out  DS_RESPONSE, out  DS_ERROR_ID);
+                string dsMerchantData = string.Empty;
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                string authCode = wsProxy.create_preauthorization(merchantCode, terminal, idPayUser, tokenPayUser, ref amount,
+                    ref transReference, ref currency, signature, ip, productDescription, owner, scoring, dsMerchantData,
+                    out dsMerchantCardCountry, out dsResponse, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", currency);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", ans);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", currency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
 
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -687,53 +707,56 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Confirm a pre-authorization previously sent by web service
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
-        public stdClass PreauthorizationConfirm(string idpayuser, string tokenpayuser, string amount, string transreference)
+        public BankstoreServResponse PreauthorizationConfirm(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + transreference + amount + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal
+                + transReference + amount + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
-                var ans = client.preauthorization_confirm
-                    (this.merchantCode, this.terminal, idpayuser, tokenpayuser, ref amount, ref transreference, signature, ip,
-                    out DS_MERCHANT_AUTHCODE, out DS_MERCHANT_CARDCOUNTRY, out DS_RESPONSE, out DS_ERROR_ID);
+                string dsMerchantCurrency = wsProxy.preauthorization_confirm(merchantCode, terminal, idPayUser, tokenPayUser, ref amount,
+                    ref transReference, signature, ip, out dsMerchantAuthCode, out dsMerchantCardCountry, out dsResponse,
+                    out dsErrorId);
 
 
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", ans);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", dsMerchantCurrency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
 
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -741,53 +764,54 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Cancels a pre-authorization previously sent by web service
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
-        public stdClass PreauthorizationCancel(string idpayuser, string tokenpayuser, string amount, string transreference)
+        public BankstoreServResponse PreauthorizationCancel(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + transreference + amount + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
+                + amount + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
-                var ans = client.preauthorization_cancel(this.merchantCode, this.terminal, idpayuser, tokenpayuser, ref amount, ref transreference, signature, ip, out DS_MERCHANT_AUTHCODE, out DS_MERCHANT_CARDCOUNTRY,
-                    out DS_RESPONSE, out DS_ERROR_ID);
+                string dsMerchantCurrency = wsProxy.preauthorization_cancel(merchantCode, terminal, idPayUser, tokenPayUser, ref amount,
+                    ref transReference, signature, ip, out dsMerchantAuthCode, out dsMerchantCardCountry, out dsResponse, out dsErrorId);
 
-
-
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", ans);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", dsMerchantCurrency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
 
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -795,53 +819,55 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Confirm deferred preauthorization by web service. Once and authorized an operation deferred pre-authorization can be confirmed for the effective recovery within 72 hours; after that date, deferred pre-authorizations lose their validity.
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
-        public stdClass DeferredPreauthorizationConfirm(string idpayuser, string tokenpayuser, string amount, string transreference)
+        public BankstoreServResponse DeferredPreauthorizationConfirm(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + transreference + amount + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
+                + amount + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
-                var ans = client.deferred_preauthorization_confirm(this.merchantCode, this.terminal, idpayuser, tokenpayuser, ref amount, ref transreference, signature, ip, out DS_MERCHANT_AUTHCODE, out DS_MERCHANT_CARDCOUNTRY,
-                    out DS_RESPONSE, out DS_ERROR_ID);
+                string dsMerchantCurrency = wsProxy.deferred_preauthorization_confirm(merchantCode, terminal, idPayUser, tokenPayUser,
+                    ref amount, ref transReference, signature, ip, out dsMerchantAuthCode, out dsMerchantCardCountry,
+                    out dsResponse, out dsErrorId);
 
-
-
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", ans);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", dsMerchantCurrency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
 
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -849,270 +875,157 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Cancels a deferred preauthorization by web service.
         /// </summary>
-        /// <param name="idpayuser">User ID in PayTPV</param>
-        /// <param name="tokenpayuser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayTPV</param>
+        /// <param name="tokenPayUser">user Token in PayTPV</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
-        public stdClass DeferredPreauthorizationCancel(string idpayuser, string tokenpayuser, string amount, string transreference)
+        public BankstoreServResponse DeferredPreauthorizationCancel(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            stdClass result = new stdClass();
+            BankstoreServResponse result = new BankstoreServResponse();
 
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + idpayuser + tokenpayuser + this.terminal + transreference + amount + password);
-            var ip = this.ipaddress;
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
+                + amount + password);
+            var ip = ipAddress;
 
             try
             {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY;
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
-                var ans = client.deferred_preauthorization_cancel(this.merchantCode, this.terminal, idpayuser, tokenpayuser, ref amount, ref transreference, signature, ip, out DS_MERCHANT_AUTHCODE, out DS_MERCHANT_CARDCOUNTRY,
-                    out DS_RESPONSE, out DS_ERROR_ID);
+                string dsMerchantCurrency = wsProxy.deferred_preauthorization_cancel(merchantCode, terminal, idPayUser, tokenPayUser,
+                    ref amount, ref transReference, signature, ip, out dsMerchantAuthCode, out dsMerchantCardCountry,
+                    out dsResponse, out dsErrorId);
 
-
-
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", ans);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", dsMerchantCurrency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", dsMerchantAuthCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
 
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
+                    result.Result = "OK";
                 }
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
             }
-            return result;
-        }
-
-        // NOT FOUND
-        public stdClass ExecutePurchaseRToken(string amount, string transreference, string rtoken, string currency, string productdescription = "false")
-        {
-            stdClass result = new stdClass();
-
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + this.terminal + amount + transreference + rtoken + password);
-            var ip = this.ipaddress;
-
-            try
+            catch (Exception)
             {
-
-                var res = Api.PayTPVService.SoapAPIProxy.Execute_purchase_rtoken(signature,merchantCode,terminal, amount, transreference, rtoken, currency, productdescription);
-
-
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY;
-
-
-                
-
-                var ans = ""; // NNOT FOUND : execute_purchase_rtoken
-                DS_ERROR_ID = "";
-                DS_RESPONSE = "";
-                DS_MERCHANT_AUTHCODE = "";
-                DS_MERCHANT_CARDCOUNTRY = "";
-
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
-                {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
-                }
-                else
-                {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_RESPONSE", DS_RESPONSE);
-                    result.data.Add("DS_MERCHANT_AMOUNT", amount);
-                    result.data.Add("DS_MERCHANT_ORDER", transreference);
-                    result.data.Add("DS_MERCHANT_CURRENCY", ans);
-                    result.data.Add("DS_MERCHANT_AUTHCODE", DS_MERCHANT_AUTHCODE);
-                    result.data.Add("DS_MERCHANT_CARDCOUNTRY", DS_MERCHANT_CARDCOUNTRY);
-
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
-                }
-            }
-            catch (Exception e)
-            {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
-            }
-            return result;
-        }
-
-        /**
-    	* INTEGRATION BANKSTORE JET ---------------------------------------------- ----->
-	    */
-
-
-        /// <summary>
-        /// Add a user by using web service BankStore JET
-        /// </summary>
-        /// <param name="jettoken">jettoken temporary user Token in PayTPV</param>
-        /// <returns>transaction response</returns>
-        public stdClass AddUserToken(string jettoken)
-        {
-            stdClass result = new stdClass();
-
-
-            var signature = SHA1HashStringForUTF8String(this.merchantCode + jettoken + this.jetid + this.terminal + password);
-            var ip = this.ipaddress;
-
-            try
-            {
-                PAYTPV_BankStoreGatewayService client = new PAYTPV_BankStoreGatewayService();
-                string DS_ERROR_ID, DS_MERCHANT_AUTHCODE, DS_MERCHANT_CARDCOUNTRY, DS_RESPONSE, DS_MERCHANT_AMOUNT, DS_MERCHANT_ORDER, DS_MERCHANT_CURRENCY, DS_TOKEN_USER;
-
-                var ans = client.add_user_token(merchantCode, this.terminal, jettoken, this.jetid, signature, ip, out DS_TOKEN_USER, out DS_ERROR_ID);
-
-                if (Convert.ToInt32(DS_ERROR_ID) > 0)
-                {
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "KO";
-                }
-                else
-                {
-                    result.data = new Dictionary<string, object>();
-                    result.data.Add("DS_IDUSER", ans);
-                    result.data.Add("DS_TOKEN_USER", DS_TOKEN_USER);
-                    result.DS_ERROR_ID = DS_ERROR_ID;
-                    result.RESULT = "OK";
-                }
-            }
-            catch (Exception e)
-            {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
 
         /// <summary>
-        /// Returns the URL to launch a execute_purchase under IFRAME / Fullscreen
+        /// Add a user by using web service BankStore JET
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="jetToken">jetToken temporary user Token in PayTPV</param>
+        /// <returns>transaction response</returns>
+        public BankstoreServResponse AddUserToken(string jetToken)
+        {
+            BankstoreServResponse result = new BankstoreServResponse();
+
+            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + jetToken + jetId + terminal + password);
+            var ip = ipAddress;
+
+            try
+            {
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                string dsErrorId, dsTokenUser = string.Empty;
+
+                string dsIdUser = wsProxy.add_user_token(merchantCode, terminal, jetToken, jetId, signature, ip,
+                    out dsTokenUser, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
+                {
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
+                }
+                else
+                {
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_IDUSER", dsIdUser);
+                    result.Data.Add("DS_TOKEN_USER", dsTokenUser);
+
+                    result.Result = "OK";
+                }
+            }
+            catch (HttpException)
+            {
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Executes a payment for web service with the "payment by reference" for the migration to PayTpv
+        /// </summary>
         /// <param name="amount">Amount of payment 1 € = 100</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
+        /// <param name="rToken">Original card reference stored in old system</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="lang">language transaction literals</param>
-        /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="productDescription">description Operation description</param>
         /// <returns>transaction response</returns>
-        public stdClass ExecutePurchaseUrl(string transreference, string amount, string currency, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse ExecutePurchaseRToken(string amount, string transReference, string rToken, string currency, string productDescription = null)
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+
             try
             {
-                operation.Type = 1;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
+                var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + terminal + amount + transReference + rToken + password);
+                var ip = ipAddress;
 
-                if (secure3d != "false")
+                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+
+                string dsErrorId, dsMerchantCardCountry, dsResponse = string.Empty;
+                string authCode = wsProxy.execute_purchase_rtoken(merchantCode, terminal, ref amount, ref transReference, rToken,
+                    ref currency, signature, productDescription, out dsMerchantCardCountry, out dsResponse, out dsErrorId);
+
+                if (Convert.ToInt32(dsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
-                }
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.DsErrorId = dsErrorId;
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data.Add("DS_MERCHANT_AMOUNT", amount);
+                    result.Data.Add("DS_MERCHANT_ORDER", transReference);
+                    result.Data.Add("DS_MERCHANT_CURRENCY", currency);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
+                    result.Data.Add("DS_RESPONSE", dsResponse);
+
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
             }
-            return result;
-        }
-
-        /// <summary>
-        /// Returns the URL to launch a execute_purchase_token under IFRAME / Fullscreen
-        /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
-        /// <param name="amount">Amount of payment 1 € = 100</param>
-        /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
-        /// <param name="lang">language transaction literals</param>
-        /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
-        /// <returns>transaction response</returns>
-        public stdClass ExecutePurchaseTokenUrl(string transreference, string amount, string currency, string iduser, string tokenuser,
-            string lang = "ES", string description = "false", string secure3d = "false")
-        {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
-            try
+            catch (Exception)
             {
-                operation.Type = 109;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
-
-
-                if (secure3d != "false")
-                {
-                    operation.Secure3D = secure3d;
-                }
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
-                }
-                else
-                {
-                    result.RESULT = "OK";
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1120,41 +1033,95 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a add_user under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="lang">language transaction literals</param>
         /// <returns>transaction response</returns>
-        public stdClass AddUserUrl(string transreference, string lang = "ES")
+        public BankstoreServResponse AddUserUrl(string transReference, string lang = "ES")
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 107;
-                operation.Reference = transreference;
-                operation.Language = lang;
+                operationData.Type = OperationTypes.ADD_USER;
+                operationData.Reference = transReference;
+                operationData.Language = lang;
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
 
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
+                result = CheckUrlError(endpointUrl + lastRequest);
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the URL to launch a execute_purchase under IFRAME / Fullscreen
+        /// </summary>
+        /// <param name="transReference">transReference unique identifier payment</param>
+        /// <param name="amount">Amount of payment 1 € = 100</param>
+        /// <param name="currency">currency identifier transaction currency</param>
+        /// <param name="lang">language transaction literals</param>
+        /// <param name="description">description Operation description</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <returns>transaction response</returns>
+        public BankstoreServResponse ExecutePurchaseUrl(string transReference, string amount, string currency, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
+        {
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
+            try
+            {
+                operationData.Type = OperationTypes.EXECUTE_PURCHASE;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
+
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+
+                result = CheckUrlError(endpointUrl + lastRequest);
+                if (Convert.ToInt32(result.DsErrorId) > 0)
+                {
+                    result.Result = "KO";
+                }
+                else
+                {
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
+                }
+            }
+            catch (HttpException)
+            {
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1162,59 +1129,116 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a create_subscription under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-        /// <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
+        /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+        /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
         /// <param name="lang">language transaction literals</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass CreateSubscriptionUrl(string transreference, string amount, string currency, string startdate, string enddate,
-            string periodicity, string lang = "ES", string secure3d = "false")
+        public BankstoreServResponse CreateSubscriptionUrl(string transReference, string amount, string currency, string startDate, string endDate,
+            string periodicity, string lang = "ES", string secure3D = "0", string scoring = null)
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 9;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Periodicity = periodicity;
-                operation.StartDate = startdate;
-                operation.EndDate = enddate;
+                operationData.Type = OperationTypes.CREATE_SUBSCRIPTION;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Periodicity = periodicity;
+                operationData.StartDate = startDate;
+                operationData.EndDate = endDate;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
 
-
-                if (secure3d != "false")
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
-                }
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns the URL to launch a execute_purchase_token under IFRAME / Fullscreen
+        /// </summary>
+        /// <param name="transReference">transReference unique identifier payment</param>
+        /// <param name="amount">Amount of payment 1 € = 100</param>
+        /// <param name="currency">currency identifier transaction currency</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
+        /// <param name="lang">language transaction literals</param>
+        /// <param name="description">description Operation description</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <returns>transaction response</returns>
+        public BankstoreServResponse ExecutePurchaseTokenUrl(string transReference, string amount, string currency, string idUser, string tokenUser,
+            string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
+        {
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
+            try
+            {
+                operationData.Type = OperationTypes.EXECUTE_PURCHASE_TOKEN;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
+
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+
+                if (Convert.ToInt32(result.DsErrorId) > 0)
+                {
+                    result.Result = "KO";
+                }
+                else
+                {
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
+                }
+            }
+            catch (HttpException)
+            {
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1222,63 +1246,63 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a create_subscription_token under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="startdate">startdate date subscription start yyyy-mm-dd</param>
-        /// <param name="enddate">enddate Date End subscription yyyy-mm-dd</param>
+        /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
+        /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
         /// <param name="lang">language transaction literals</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass CreateSubscriptionTokenUrl(string transreference, string amount, string currency, string startdate, string enddate,
-            string periodicity, string iduser, string tokenuser, string lang = "ES", string secure3d = "false")
+        public BankstoreServResponse CreateSubscriptionTokenUrl(string transReference, string amount, string currency, string startDate, string endDate,
+            string periodicity, string idUser, string tokenUser, string lang = "ES", string secure3D = "0", string scoring = null)
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 110;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Periodicity = periodicity;
-                operation.StartDate = startdate;
-                operation.EndDate = enddate;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
+                operationData.Type = OperationTypes.CREATE_SUBSCRIPTION_TOKEN;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Periodicity = periodicity;
+                operationData.StartDate = startDate;
+                operationData.EndDate = endDate;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
 
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
 
-                if (secure3d != "false")
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
-                }
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
+                    result.Result = "KO";
 
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1286,54 +1310,54 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a create_preauthorization under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass CreatePreauthorizationUrl(string transreference, string amount, string currency, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse CreatePreauthorizationUrl(string transReference, string amount, string currency, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 3;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
+                operationData.Type = OperationTypes.CREATE_PREAUTHORIZATION;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
 
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
 
-                if (secure3d != "false")
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
-                }
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
+                    result.Result = "KO";
 
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1341,65 +1365,63 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a preauthorization_confirm under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass PreauthorizationConfirmUrl(string transreference, string amount, string currency, string iduser,
-            string tokenuser, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse PreauthorizationConfirmUrl(string transReference, string amount, string currency, string idUser,
+            string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 6;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
+                operationData.Type = OperationTypes.PREAUTHORIZATION_CONFIRM;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
 
-
-                if (secure3d != "false")
+                var checkUserExist = InfoUser(operationData.IdUser, operationData.TokenUser);
+                if (Convert.ToInt32(checkUserExist.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
+                    return checkUserExist;
                 }
-                var check_user_exist = this.InfoUser(operation.IdUser, operation.TokenUser);
-                if (Convert.ToInt32(check_user_exist.DS_ERROR_ID) != 0)
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    return check_user_exist;
-                }
-
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
+                    result.Result = "KO";
 
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1407,65 +1429,62 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a preauthorization_cancel under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass PreauthorizationCancelUrl(string transreference, string amount, string currency, string iduser,
-            string tokenuser, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse PreauthorizationCancelUrl(string transReference, string amount, string currency, string idUser,
+            string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 4;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
+                operationData.Type = OperationTypes.PREAUTHORIZATION_CANCEL;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
 
-
-                if (secure3d != "false")
+                var checkUserExist = InfoUser(operationData.IdUser, operationData.TokenUser);
+                if (Convert.ToInt32(checkUserExist.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
+                    return checkUserExist;
                 }
-                var check_user_exist = this.InfoUser(operation.IdUser, operation.TokenUser);
-                if (Convert.ToInt32(check_user_exist.DS_ERROR_ID) != 0)
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    return check_user_exist;
-                }
-
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1473,65 +1492,63 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a execute_preauthorization_token under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass ExecutePreauthorizationTokenUrl(string transreference, string amount, string currency, string iduser,
-            string tokenuser, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse ExecutePreauthorizationTokenUrl(string transReference, string amount, string currency, string idUser,
+            string tokenUser, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 111;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
+                operationData.Type = OperationTypes.CREATE_PREAUTHORIZATION_TOKEN;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
 
-
-                if (secure3d != "false")
+                var checkUserExist = InfoUser(operationData.IdUser, operationData.TokenUser);
+                if (Convert.ToInt32(checkUserExist.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
+                    return checkUserExist;
                 }
-                var check_user_exist = this.InfoUser(operation.IdUser, operation.TokenUser);
-                if (Convert.ToInt32(check_user_exist.DS_ERROR_ID) != 0)
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    return check_user_exist;
-                }
-
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1539,55 +1556,53 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a deferred_preauthorization under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass DeferredPreauthorizationUrl(string transreference, string amount, string currency, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse DeferredPreauthorizationUrl(string transReference, string amount, string currency, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 13;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
+                operationData.Type = OperationTypes.DEFERRED_CREATE_PREAUTHORIZATION;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.Secure3D = secure3D;
+                operationData.Scoring = scoring;
 
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
 
-                if (secure3d != "false")
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
-                }
-						
-			   
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1595,63 +1610,61 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a deferred_preauthorization_confirm under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass DeferredPreauthorizationConfirmUrl(string transreference, string amount, string currency, string iduser, string tokenuser, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse DeferredPreauthorizationConfirmUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 16;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
+                operationData.Type = OperationTypes.DEFERRED_PREAUTHORIZATION_CONFIRM;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
 
-                if (secure3d != "false")
+                var checkUserExist = InfoUser(operationData.IdUser, operationData.TokenUser);
+                if (Convert.ToInt32(checkUserExist.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
+                    return checkUserExist;
                 }
-                var check_user_exist = this.InfoUser(operation.IdUser, operation.TokenUser);
-                if (Convert.ToInt32(check_user_exist.DS_ERROR_ID) != 0)
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    return check_user_exist;
-                }
-
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
@@ -1659,372 +1672,211 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Returns the URL to launch a deferred_preauthorization_cancel under IFRAME / Fullscreen
         /// </summary>
-        /// <param name="transreference">transreference unique identifier payment</param>
+        /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="currency">currency identifier transaction currency</param>
-        /// <param name="iduser">iduser unique identifier system registered user.</param>
-        /// <param name="tokenuser">tokenuser token code associated to IDUSER.</param>
+        /// <param name="idUser">idUser unique identifier system registered user.</param>
+        /// <param name="tokenUser">tokenUser token code associated to IDUSER.</param>
         /// <param name="lang">language transaction literals</param>
         /// <param name="description">description Operation description</param>
-        /// <param name="secure3d">secure3d Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
+        /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public stdClass DeferredPreauthorizationCancelUrl(string transreference, string amount, string currency, string iduser, string tokenuser, string lang = "ES", string description = "false", string secure3d = "false")
+        public BankstoreServResponse DeferredPreauthorizationCancelUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            stdClass result = new stdClass();
-            OperationData operation = new OperationData();
+            BankstoreServResponse result = new BankstoreServResponse();
+            OperationData operationData = new OperationData();
             try
             {
-                operation.Type = 14;
-                operation.Reference = transreference;
-                operation.Amount = amount;
-                operation.Currency = currency;
-                operation.Language = lang;
-                operation.Concept = description;
-                operation.IdUser = iduser;
-                operation.TokenUser = tokenuser;
+                operationData.Type = OperationTypes.DEFERRED_PREAUTHORIZATION_CANCEL;
+                operationData.Reference = transReference;
+                operationData.Amount = amount;
+                operationData.Currency = currency;
+                operationData.Language = lang;
+                operationData.Concept = description;
+                operationData.IdUser = idUser;
+                operationData.TokenUser = tokenUser;
+                operationData.Secure3D = secure3D;
 
-                if (secure3d != "false")
+                var checkUserExist = InfoUser(operationData.IdUser, operationData.TokenUser);
+                if (Convert.ToInt32(checkUserExist.DsErrorId) > 0)
                 {
-                    operation.Secure3D = secure3d;
+                    return checkUserExist;
                 }
-                var check_user_exist = this.InfoUser(operation.IdUser, operation.TokenUser);
-                if (Convert.ToInt32(check_user_exist.DS_ERROR_ID) != 0)
+                operationData.Hash = GenerateHash(operationData, operationData.Type); //generate hash
+                string lastRequest = ComposeURLParams(operationData, operationData.Type);
+                string urlRedirect = endpointUrl + lastRequest;
+                result = CheckUrlError(urlRedirect);
+
+                if (Convert.ToInt32(result.DsErrorId) > 0)
                 {
-                    return check_user_exist;
-                }
-
-
-                operation.Hash = this.GenerateHash(operation, operation.Type); //generate hash
-                string lastrequest = ComposeURLParams(operation, operation.Type);
-
-                result = CheckUrlError(lastrequest);
-                result.data["URL_REDIRECT"] = (this.endpointurl + lastrequest);
-
-                if (Convert.ToInt32(result.DS_ERROR_ID) > 0)
-                {
-                    result.RESULT = "KO";
-
+                    result.Result = "KO";
                 }
                 else
                 {
-                    result.RESULT = "OK";
+                    result.Data = new Dictionary<string, string>();
+                    result.Data["URL_REDIRECT"] = endpointUrl + lastRequest;
+                    result.Result = "OK";
                 }
-                return result;
             }
-            catch (Exception e)
+            catch (HttpException)
             {
-                result.DS_ERROR_ID = "1011";
-                result.RESULT = "KO";
-                return result;
+                result.DsErrorId = "1011";
+                result.Result = "KO";
+            }
+            catch (Exception)
+            {
+                result.DsErrorId = "1002";
+                result.Result = "KO";
             }
             return result;
         }
 
-        //------------------------------------------------------------------------------------
 
-        private string GenerateHash(OperationData operationdata, int operationtype)
+        private string GenerateHash(OperationData operationData, int operationType)
         {
-            string hash = "false";
+            string hash = string.Empty;
             using (MD5 md5Hash = MD5.Create())
             {
-                switch (operationtype)
+                switch (operationType)
                 {
-                    case 1: // Authorization (execute_purchase)
-                        hash = md5(md5Hash, this.merchantCode + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        operationdata.Currency + md5(md5Hash, this.password));
+                    case OperationTypes.EXECUTE_PURCHASE:
+                    case OperationTypes.CREATE_PREAUTHORIZATION:
+                    case OperationTypes.CREATE_SUBSCRIPTION:
+                    case OperationTypes.DEFERRED_CREATE_PREAUTHORIZATION:
+                        hash = Cryptography.ComputeMD5(md5Hash, merchantCode + terminal + operationType + operationData.Reference + operationData.Amount +
+                        operationData.Currency + Cryptography.ComputeMD5(md5Hash, password));
                         break;
-                    case 3:// Preauthorization
-                        hash = md5(md5Hash, this.merchantCode + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        operationdata.Currency + md5(md5Hash, this.password));
+                    case OperationTypes.PREAUTHORIZATION_CONFIRM:
+                    case OperationTypes.PREAUTHORIZATION_CANCEL:
+                    case OperationTypes.DEFERRED_PREAUTHORIZATION_CONFIRM:
+                    case OperationTypes.DEFERRED_PREAUTHORIZATION_CANCEL:
+                        hash = Cryptography.ComputeMD5(md5Hash, merchantCode + operationData.IdUser + operationData.TokenUser + terminal + operationType + operationData.Reference + operationData.Amount +
+                        Cryptography.ComputeMD5(md5Hash, password));
                         break;
-                    case 6: // Confirmación de Preauthorization
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        md5(md5Hash, this.password));
+                    case OperationTypes.ADD_USER:
+                        hash = Cryptography.ComputeMD5(md5Hash, merchantCode + terminal + operationType + operationData.Reference + Cryptography.ComputeMD5(md5Hash, password));
                         break;
-                    case 4: // Cancelación de Preauthorization
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        md5(md5Hash, this.password));
+                    case OperationTypes.EXECUTE_PURCHASE_TOKEN:
+                    case OperationTypes.CREATE_SUBSCRIPTION_TOKEN:
+                    case OperationTypes.CREATE_PREAUTHORIZATION_TOKEN:
+                        hash = Cryptography.ComputeMD5(md5Hash, merchantCode + operationData.IdUser + operationData.TokenUser + terminal + operationType + operationData.Reference + operationData.Amount +
+                         operationData.Currency + Cryptography.ComputeMD5(md5Hash, password));
                         break;
-                    case 9:// Subscription
-                        hash = md5(md5Hash, this.merchantCode + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        operationdata.Currency + md5(md5Hash, this.password));
-                        break;
-
-                    case 107: // Add_user
-                        hash = md5(md5Hash, this.merchantCode + this.terminal + operationtype + operationdata.Reference + md5(md5Hash, this.password));
-                        break;
-                    case 109: // execute_purchase_token
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                         operationdata.Currency + md5(md5Hash, this.password));
-                        break;
-                    case 110: // create_subscription_token
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                         operationdata.Currency + md5(md5Hash, this.password));
-                        break;
-                    case 111:// create_preauthorization_token
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                         operationdata.Currency + md5(md5Hash, this.password));
-                        break;
-                    case 13:// Preauthorization Diferida
-                        hash = md5(md5Hash, this.merchantCode + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        operationdata.Currency + md5(md5Hash, this.password));
-                        break;
-                    case 16: // Confirmación de Preauthorization Diferida
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        md5(md5Hash, this.password));
-                        break;
-                    case 14: // Cancelación de Preauthorization Diferida
-                        hash = md5(md5Hash, this.merchantCode + operationdata.IdUser + operationdata.TokenUser + this.terminal + operationtype + operationdata.Reference + operationdata.Amount +
-                        md5(md5Hash, this.password));
+                    default:
                         break;
                 }
             }
             return hash;
         }
 
-        private string ComposeURLParams(OperationData operationdata, int operationtype)
+        private string ComposeURLParams(OperationData operationData, int operationType)
         {
-            string secureurlhash = "false";
+            string secureUrlHash = string.Empty;
             SortedDictionary<string, string> data = new SortedDictionary<string, string>();
-            data["MERCHANT_MERCHANTCODE"] = this.merchantCode;
-            data["MERCHANT_TERMINAL"] = this.terminal;
-            data["OPERATION"] = operationtype.ToString();
-            data["LANGUAGE"] = operationdata.Language;
-            data["MERCHANT_MERCHANTSIGNATURE"] = operationdata.Hash;
-            data["URLOK"] = operationdata.UrlOk;
-            data["URLKO"] = operationdata.UrlKo;
-            data["MERCHANT_ORDER"] = operationdata.Reference;
-            if (operationdata.Secure3D != "false")
+
+            data["MERCHANT_MERCHANTCODE"] = merchantCode;
+            data["MERCHANT_TERMINAL"] = terminal;
+            data["OPERATION"] = operationType.ToString();
+            data["LANGUAGE"] = operationData.Language;
+            data["MERCHANT_MERCHANTSIGNATURE"] = operationData.Hash;
+            data["URLOK"] = operationData.UrlOk;
+            data["URLKO"] = operationData.UrlKo;
+            data["MERCHANT_ORDER"] = operationData.Reference;
+            data["3DSECURE"] = operationData.Secure3D;
+            data["MERCHANT_AMOUNT"] = operationData.Amount;
+            if (!string.IsNullOrEmpty(operationData.Concept))
+                data["MERCHANT_PRODUCTDESCRIPTION"] = operationData.Concept;
+
+            switch (operationType)
             {
-                data["3DSECURE"] = operationdata.Secure3D;
-            }
-            data["MERCHANT_AMOUNT"] = operationdata.Amount;
-            if (operationdata.Concept != "")
-            {
-                data["MERCHANT_PRODUCTDESCRIPTION"] = operationdata.Concept;
+                case OperationTypes.EXECUTE_PURCHASE:
+                case OperationTypes.CREATE_PREAUTHORIZATION:
+                case OperationTypes.DEFERRED_CREATE_PREAUTHORIZATION:
+                    data["MERCHANT_CURRENCY"] = operationData.Currency;
+                    if (!string.IsNullOrEmpty(operationData.Scoring))
+                        data["MERCHANT_SCORING"] = operationData.Scoring;
+                    break;
+                case OperationTypes.PREAUTHORIZATION_CONFIRM:
+                case OperationTypes.PREAUTHORIZATION_CANCEL:
+                case OperationTypes.DEFERRED_PREAUTHORIZATION_CONFIRM:
+                case OperationTypes.DEFERRED_PREAUTHORIZATION_CANCEL:
+                    data["MERCHANT_CURRENCY"] = operationData.Currency;
+                    data["IDUSER"] = operationData.IdUser;
+                    data["TOKEN_USER"] = operationData.TokenUser;
+                    break;
+                case OperationTypes.CREATE_SUBSCRIPTION:
+                    data["MERCHANT_CURRENCY"] = operationData.Currency;
+                    data["SUBSCRIPTION_STARTDATE"] = operationData.StartDate;
+                    data["SUBSCRIPTION_ENDDATE"] = operationData.EndDate;
+                    data["SUBSCRIPTION_PERIODICITY"] = operationData.Periodicity;
+                    if (!string.IsNullOrEmpty(operationData.Scoring))
+                        data["MERCHANT_SCORING"] = operationData.Scoring;
+                    break;
+                case OperationTypes.EXECUTE_PURCHASE_TOKEN:
+                case OperationTypes.CREATE_PREAUTHORIZATION_TOKEN:
+                    data["IDUSER"] = operationData.IdUser;
+                    data["TOKEN_USER"] = operationData.TokenUser;
+                    data["MERCHANT_CURRENCY"] = operationData.Currency;
+                    if (!string.IsNullOrEmpty(operationData.Scoring))
+                        data["MERCHANT_SCORING"] = operationData.Scoring;
+                    break;
+                case OperationTypes.CREATE_SUBSCRIPTION_TOKEN:
+                    data["IDUSER"] = operationData.IdUser;
+                    data["TOKEN_USER"] = operationData.TokenUser;
+                    data["MERCHANT_CURRENCY"] = operationData.Currency;
+                    data["SUBSCRIPTION_STARTDATE"] = operationData.StartDate;
+                    data["SUBSCRIPTION_ENDDATE"] = operationData.EndDate;
+                    data["SUBSCRIPTION_PERIODICITY"] = operationData.Periodicity;
+                    if (!string.IsNullOrEmpty(operationData.Scoring))
+                        data["MERCHANT_SCORING"] = operationData.Scoring;
+                    break;
+                default:
+                    break;
             }
 
-            if ((int)operationtype == 1)
-            {					// Authorization (execute_purchase)
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-            }
-            else if ((int)operationtype == 3)
-            {			// Preauthorization
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-            }
-            else if ((int)operationtype == 6)
-            {			// Confirmación de Preauthorization
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-            }
-            else if ((int)operationtype == 4)
-            {			// Cancelación de Preauthorization
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-            }
-            else if ((int)operationtype == 9)
-            {			// Subscription
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-                data["SUBSCRIPTION_STARTDATE"] = operationdata.StartDate;
-                data["SUBSCRIPTION_ENDDATE"] = operationdata.EndDate;
-                data["SUBSCRIPTION_PERIODICITY"] = operationdata.Periodicity;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-            }
-            else if ((int)operationtype == 109)
-            {			// execute_purchase_token
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-            }
-            else if ((int)operationtype == 110)
-            {			// create_subscription_token
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-                data["SUBSCRIPTION_STARTDATE"] = operationdata.StartDate;
-                data["SUBSCRIPTION_ENDDATE"] = operationdata.EndDate;
-                data["SUBSCRIPTION_PERIODICITY"] = operationdata.Periodicity;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-            }
-            else if ((int)operationtype == 111)
-            {			// create_preauthorization_token
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-            }
-            else if ((int)operationtype == 13)
-            {			// Deferred Preauthorization
-                data["MERCHANT_CURRENCY"] = operationdata.Currency;
-                data["MERCHANT_SCORING"] = operationdata.Scoring;
-            }
-            else if ((int)operationtype == 16)
-            {			// Deferred Confirmación de Preauthorization
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-            }
-            else if ((int)operationtype == 14)
-            {			// Deferred  Cancelación de Preauthorization
-                data["IDUSER"] = operationdata.IdUser;
-                data["TOKEN_USER"] = operationdata.TokenUser;
-            }
-
-            string content = "";
+            string content = string.Empty;
             foreach (var k in data.Keys)
+                content += "&" + string.Format("{0}={1}", HttpUtility.UrlEncode(k), HttpUtility.UrlEncode(data[k]));
+            content = content.Remove(0, 1);
+            using (MD5 md5Hash = MD5.Create())
             {
-                if (content != "")
-                    content += @"&";
-
-                content += HttpUtility.UrlEncode(k) + "=" + HttpUtility.UrlEncode(data[k]);
+                data["VHASH"] = Cryptography.SHA512HashStringForUTF8String(Cryptography.ComputeMD5(md5Hash, content + Cryptography.ComputeMD5(md5Hash, password)));
             }
-            MD5 mdhash = MD5.Create();
-
-            data["VHASH"] = SHA512HashStringForUTF8String(md5(mdhash, content + md5(mdhash, this.password)));
-            //krsort(data);
-            //var dd = new Dictionary<string, string>();
-            data.Reverse();
             foreach (var k in data.Keys)
-            {
-                if (secureurlhash != "")
-                    secureurlhash += @"&";
-
-                secureurlhash += HttpUtility.UrlEncode(k) + "=" + HttpUtility.UrlEncode(data[k]);
-            }
-
-            return secureurlhash;
+                secureUrlHash += "&" + string.Format("{0}={1}", HttpUtility.UrlEncode(k), HttpUtility.UrlEncode(data[k]));
+            secureUrlHash = secureUrlHash.Remove(0, 1);
+            return secureUrlHash;
         }
 
-        private stdClass CheckUrlError(string urlgen)
+        private BankstoreServResponse CheckUrlError(string urlGen)
         {
-            stdClass response = new stdClass();
-            response.DS_ERROR_ID = "1023";
-            using (WebClient web = new WebClient())
+            BankstoreServResponse response = new BankstoreServResponse();
+            using (WebClient webClient = new WebClient())
             {
                 try
                 {
-                    string data = web.DownloadString(urlgen);
-                    if (data.Contains("Error"))
+                    string data = webClient.DownloadString(urlGen);
+                    if (Regex.IsMatch(data, @"Error: \d+"))
                     {
-                        response.DS_ERROR_ID = "1021";
-                    }
-                    else
-                    {
-                        response.DS_ERROR_ID = "0";
+                        response.DsErrorId = Regex.Match(data, @"\d+").Value;
+                        response.Result = "KO";
                     }
                 }
-                catch (HttpException he)
+                catch (HttpException)
                 {
-                    response.DS_ERROR_ID = "1021";
-                    response.RESULT = "KO";
+                    response.DsErrorId = "1011";
+                    response.Result = "KO";
                 }
-                catch (Exception ee)
+                catch (Exception)
                 {
-                    response.DS_ERROR_ID = "1021";
+                    response.DsErrorId = "1002";
+                    response.Result = "KO";
                 }
-
-
             }
             return response;
         }
 
-        #region Utility Methods
-        /// <summary>
-        /// MD5 hash creator
-        /// </summary>
-        /// <param name="md5Hash">md5 Hash</param>
-        /// <param name="input">input string to be converted to hashcode</param>
-        /// <returns>transaction response</returns>
-        static string md5(MD5 md5Hash, string input)
-        {
-
-            // Convert the input string to a byte array and compute the hash.
-            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            // Create a new Stringbuilder to collect the bytes
-            // and create a string.
-            StringBuilder sBuilder = new StringBuilder();
-
-            // Loop through each byte of the hashed data 
-            // and format each one as a hexadecimal string.
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-
-            // Return the hexadecimal string.
-            return sBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Compute hash for string encoded as UTF8
-        /// </summary>
-        /// <param name="s">String to be hashed</param>
-        /// <returns>40-character hex string</returns>
-        private static string SHA1HashStringForUTF8String(string s)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(s);
-
-            var sha1 = SHA1.Create();
-            byte[] hashBytes = sha1.ComputeHash(bytes);
-
-            return HexStringFromBytes(hashBytes);
-        }
-        private static string SHA512HashStringForUTF8String(string s)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(s);
-
-            var sha1 = SHA512.Create();
-            byte[] hashBytes = sha1.ComputeHash(bytes);
-
-            return HexStringFromBytes(hashBytes);
-        }
-
-        /// <summary>
-        /// Convert an array of bytes to a string of hex digits
-        /// </summary>
-        /// <param name="bytes">array of bytes</param>
-        /// <returns>String of hex digits</returns>
-        private static string HexStringFromBytes(byte[] bytes)
-        {
-            var sb = new StringBuilder();
-            foreach (byte b in bytes)
-            {
-                var hex = b.ToString("x2");
-                sb.Append(hex);
-            }
-            return sb.ToString();
-        }
-        #endregion
     }
 
-    public class stdClass
-    {
-        public string RESULT { get; set; }
-        public string DS_ERROR_ID { get; set; }
-        public Dictionary<string, object> data { get; set; }
-    }
 
-    public class OperationData
-    {
-        public int Type { get; set; }
-        public string Language { get; set; }
-        public string Hash { get; set; }
-        public string UrlOk { get; set; }
-        public string UrlKo { get; set; }
-        public string Reference { get; set; }
-        public string Secure3D { get; set; }
-        public string Amount { get; set; }
-        public string Concept { get; set; }
-        public string Currency { get; set; }
-        public string Scoring { get; set; }
-        public string IdUser { get; set; }
-        public string TokenUser { get; set; }
-        public string StartDate { get; set; }
-        public string EndDate { get; set; }
-        public string Periodicity { get; set; }
-
-    }
 }
