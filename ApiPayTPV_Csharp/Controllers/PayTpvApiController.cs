@@ -15,6 +15,7 @@ namespace ApiPayTPV_Csharp.Controllers
         private string terminal = ConfigurationManager.AppSettings["TerminalTest"];
         private string password = ConfigurationManager.AppSettings["PasswordTest"];
         private string ipAddress = ConfigurationManager.AppSettings["IPTest"];
+        private string jetId = ConfigurationManager.AppSettings["JetIdTest"];
 
         public PayTPVApiController()
         {
@@ -38,7 +39,7 @@ namespace ApiPayTPV_Csharp.Controllers
 
         /// <summary>
         /// Add a card to PayTPV.  IMPORTANTES !!! This direct input must be activated by PayTPV.
-	    /// In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
+        /// In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
         /// <param name="expDate">EXPDATE expiry date of the card, expressed as "MMYY" (two-digit month and year in two digits)</param>
@@ -338,7 +339,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("AddUserToken")]
         public BankstoreServResponse AddUserToken(string jetToken)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress, jetId);
             var servResponse = serviceAPI.AddUserToken(jetToken);
             return servResponse;
         }
