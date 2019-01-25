@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions;
-using ApiPayTPV_Csharp.Areas.HelpPage.Models;
+using ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions;
+using ApiPayCOMET_Csharp.Areas.HelpPage.Models;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage.Controllers
+namespace ApiPayCOMET_Csharp.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

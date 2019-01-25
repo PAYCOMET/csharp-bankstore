@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Api.PayTPVService.Responses
+namespace Api.PayCOMETService.Responses
 {
     public class BankstoreServResponse
     {

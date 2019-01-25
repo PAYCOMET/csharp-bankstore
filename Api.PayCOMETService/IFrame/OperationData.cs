@@ -1,4 +1,4 @@
-﻿namespace Api.PayTPVService.IFrame
+﻿namespace Api.PayCOMETService.IFrame
 {
     public class OperationData
     {

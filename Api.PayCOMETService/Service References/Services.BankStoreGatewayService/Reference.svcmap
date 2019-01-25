@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://secure.paytpv.com/gateway/xml-bankstore?wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://secure.paycomet.com/gateway/xml-bankstore?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PAYTPV_BankStoreGateway.wsdl" MetadataType="Wsdl" ID="883da15e-e1af-4691-ba2c-2ed147a45229" SourceId="1" SourceUrl="https://secure.paytpv.com/gateway/xml-bankstore?wsdl" />
+    <MetadataFile FileName="PAYCOMET_BankStoreGateway.wsdl" MetadataType="Wsdl" ID="883da15e-e1af-4691-ba2c-2ed147a45229" SourceId="1" SourceUrl="https://secure.paycomet.com/gateway/xml-bankstore?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

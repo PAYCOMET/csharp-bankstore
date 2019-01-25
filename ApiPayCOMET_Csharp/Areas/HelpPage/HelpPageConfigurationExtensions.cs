@@ -11,10 +11,10 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions;
-using ApiPayTPV_Csharp.Areas.HelpPage.Models;
+using ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions;
+using ApiPayCOMET_Csharp.Areas.HelpPage.Models;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage
+namespace ApiPayCOMET_Csharp.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

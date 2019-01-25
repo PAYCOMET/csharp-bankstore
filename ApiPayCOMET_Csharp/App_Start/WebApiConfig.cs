@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using System.Net.Http.Headers;
 
-namespace ApiPayTPV_Csharp
+namespace ApiPayCOMET_Csharp
 {
     public static class WebApiConfig
     {

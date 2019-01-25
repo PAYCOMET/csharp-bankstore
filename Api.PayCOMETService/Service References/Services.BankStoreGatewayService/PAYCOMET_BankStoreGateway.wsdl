@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:PAYTPV_BankStoreGateway" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="PAYTPV_BankStoreGateway" targetNamespace="urn:PAYTPV_BankStoreGateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:PAYCOMET_BankStoreGateway" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns="http://schemas.xmlsoap.org/wsdl/" name="PAYCOMET_BankStoreGateway" targetNamespace="urn:PAYCOMET_BankStoreGateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types xmlns="http://schemas.xmlsoap.org/wsdl/" />
   <wsdl:message name="add_userRequest">
     <wsdl:part name="DS_MERCHANT_MERCHANTCODE" type="xsd:string" />
@@ -353,7 +353,7 @@
     <wsdl:part name="DS_RESPONSE" type="xsd:integer" />
     <wsdl:part name="DS_ERROR_ID" type="xsd:integer" />
   </wsdl:message>
-  <wsdl:portType name="PAYTPV_BankStoreGatewayPort">
+  <wsdl:portType name="PAYCOMET_BankStoreGatewayPort">
     <wsdl:operation name="add_user">
       <wsdl:input message="tns:add_userRequest" />
       <wsdl:output message="tns:add_userResponse" />
@@ -427,7 +427,7 @@
       <wsdl:output message="tns:execute_purchase_rtokenResponse" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="PAYTPV_BankStoreGatewayBinding" type="tns:PAYTPV_BankStoreGatewayPort">
+  <wsdl:binding name="PAYCOMET_BankStoreGatewayBinding" type="tns:PAYCOMET_BankStoreGatewayPort">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
     <wsdl:operation name="add_user">
       <soap:operation soapAction="http://schemas.xmlsoap.org/soap/envelope/#BankStore#add_user" />
@@ -592,10 +592,10 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="PAYTPV_BankStoreGatewayService">
+  <wsdl:service name="PAYCOMET_BankStoreGatewayService">
     <documentation />
-    <wsdl:port name="PAYTPV_BankStoreGatewayPort" binding="tns:PAYTPV_BankStoreGatewayBinding">
-      <soap:address location="https://secure.paytpv.com/gateway/xml-bankstore" />
+    <wsdl:port name="PAYCOMET_BankStoreGatewayPort" binding="tns:PAYCOMET_BankStoreGatewayBinding">
+      <soap:address location="https://secure.paycomet.com/gateway/xml-bankstore" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="1dreGESZ5R6b9e/S4pw05ba0RhA=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="basicHttpBinding" name="PAYTPV_BankStoreGatewayBinding">
+    <bindingConfiguration bindingType="basicHttpBinding" name="PAYCOMET_BankStoreGatewayBinding">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>PAYTPV_BankStoreGatewayBinding</serializedValue>
+          <serializedValue>PAYCOMET_BankStoreGatewayBinding</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -110,10 +110,10 @@
         </property>
       </properties>
     </bindingConfiguration>
-    <bindingConfiguration bindingType="basicHttpBinding" name="PAYTPV_BankStoreGatewayBinding1">
+    <bindingConfiguration bindingType="basicHttpBinding" name="PAYCOMET_BankStoreGatewayBinding1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>PAYTPV_BankStoreGatewayBinding1</serializedValue>
+          <serializedValue>PAYCOMET_BankStoreGatewayBinding1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -221,10 +221,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="PAYTPV_BankStoreGatewayPort" contract="Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort" bindingType="basicHttpBinding" address="https://secure.paytpv.com/gateway/xml-bankstore" bindingConfiguration="PAYTPV_BankStoreGatewayBinding">
+    <endpoint name="PAYCOMET_BankStoreGatewayPort" contract="Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort" bindingType="basicHttpBinding" address="https://secure.paycomet.com/gateway/xml-bankstore" bindingConfiguration="PAYCOMET_BankStoreGatewayBinding">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>https://secure.paytpv.com/gateway/xml-bankstore</serializedValue>
+          <serializedValue>https://secure.paycomet.com/gateway/xml-bankstore</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -233,10 +233,10 @@
           <serializedValue>basicHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>PAYTPV_BankStoreGatewayBinding</serializedValue>
+          <serializedValue>PAYCOMET_BankStoreGatewayBinding</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort</serializedValue>
+          <serializedValue>Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
@@ -296,7 +296,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>PAYTPV_BankStoreGatewayPort</serializedValue>
+          <serializedValue>PAYCOMET_BankStoreGatewayPort</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
