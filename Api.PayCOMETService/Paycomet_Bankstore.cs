@@ -4,15 +4,15 @@ using System.Web;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Net;
-using Api.PayTPVService.Services.BankStoreGatewayService;
+using Api.PayCOMETService.Services.BankStoreGatewayService;
 using System.Configuration;
-using Api.PayTPVService.Responses;
-using Api.PayTPVService.IFrame;
-using Api.PayTPVService.Utils;
+using Api.PayCOMETService.Responses;
+using Api.PayCOMETService.IFrame;
+using Api.PayCOMETService.Utils;
 
-namespace Api.PayTPVService
+namespace Api.PayCOMETService
 {
-    public class Paytpv_Bankstore
+    public class Paycomet_Bankstore
     {
         private Regex regEx = new Regex(@"\s+");
         private string merchantCode;
@@ -23,7 +23,7 @@ namespace Api.PayTPVService
         private string jetId;
         private string ipAddress;
 
-        public Paytpv_Bankstore(string merchantCode, string terminal, string password, string ipAddr, string jetId = null)
+        public Paycomet_Bankstore(string merchantCode, string terminal, string password, string ipAddr, string jetId = null)
         {
             this.merchantCode = merchantCode;
             this.terminal = terminal;
@@ -35,7 +35,7 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Add a card to PayTPV.  IMPORTANTES !!! This direct input must be activated by PayTPV.
+        /// Add a card to PayCOMET.  IMPORTANTES !!! This direct input must be activated by PayCOMET.
         /// In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
@@ -54,7 +54,7 @@ namespace Api.PayTPVService
             try
             {
 
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
 
                 string tokenUser, dsErrorId = string.Empty;
                 string idUser = wsProxy.add_user(merchantCode, terminal, pan, expDate, cvv, signature, ip, "Test name", out tokenUser, out dsErrorId);
@@ -87,10 +87,10 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Returns the user information stored in a call PayTPV by soap
+        /// Returns the user information stored in a call PayCOMET by soap
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">tokenPayUser user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">tokenPayUser user Token in PayCOMET</param>
         /// <returns>transaction response</returns>
         public BankstoreServResponse InfoUser(string idPayUser, string tokenPayUser)
         {
@@ -105,7 +105,7 @@ namespace Api.PayTPVService
             try
             {
                 string dscardBrand, dsCardType, card1CountryISO3, cardExpiryDate, dsErrorId = string.Empty;
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string merchantPAN = wsProxy.info_user(merchantCode, terminal, idPayUser, tokenPayUser, signature, ip, out dsErrorId,
                     out dscardBrand, out dsCardType, out card1CountryISO3, out cardExpiryDate);
 
@@ -140,10 +140,10 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Removes a user through call soap PayTPV
+        /// Removes a user through call soap PayCOMET
         /// </summary>
-        /// <param name="idPayUser">user ID PayTPV</param>
-        /// <param name="tokenPayUser">User Token PayTPV</param>
+        /// <param name="idPayUser">user ID PayCOMET</param>
+        /// <param name="tokenPayUser">User Token PayCOMET</param>
         /// <returns>Object A transaction response</returns>
         public BankstoreServResponse RemoveUser(string idPayUser, string tokenPayUser)
         {
@@ -155,7 +155,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId = string.Empty;
                 var dsResponse = wsProxy.remove_user(merchantCode, terminal, idPayUser, tokenPayUser, signature, ip, out dsErrorId);
 
@@ -187,8 +187,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Execute a web service payment
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
@@ -207,7 +207,7 @@ namespace Api.PayTPVService
             {
                 string dsErrorId, dsMerchantCardCountry, dsResponse, dsMerchantData = string.Empty;
 
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string authCode = wsProxy.execute_purchase(merchantCode, terminal, idPayUser, tokenPayUser, ref amount, ref transReference, ref currency, signature, ipAddress,
                     productDescription, owner, scoring, dsMerchantData, out dsMerchantCardCountry, out dsResponse, out dsErrorId);
 
@@ -244,8 +244,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Execute a web service payment with DCC operational
         /// </summary>
-        /// <param name="idPayUser">idPayUser User ID in PayTPV</param>
-        /// <param name="tokenPayUser">tokenPayUser user Token in PayTPV</param>
+        /// <param name="idPayUser">idPayUser User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">tokenPayUser user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="productDescription">Product Description Product Description</param>
@@ -261,7 +261,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantDccSession, dsMerchantDccCurrency, dsMerchantDccCurrencyIso3, dsMerchantDccCurrencyName = string.Empty;
                 string dsMerchantDccExchange, dsMerchantDccAmount, dsMerchantDccMarkup, dsMerchantDccCardCountry, dsResponse = string.Empty;
                 string merchantCurrency = wsProxy.execute_purchase_dcc(merchantCode, terminal, idPayUser, tokenPayUser, ref amount, ref transReference, signature, ip,
@@ -308,7 +308,7 @@ namespace Api.PayTPVService
         /// Confirm a payment by web service with DCC operational
         /// </summary>
         /// <param name="transReference">transReference unique identifier payment</param>
-        /// <param name="dccCurrency">dcccurrency chosen currency transaction. It may be the product of PayTPV native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
+        /// <param name="dccCurrency">dcccurrency chosen currency transaction. It may be the product of PayCOMET native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
         /// <param name="dccSession">dccsession sent in the same session execute_purchase_dcc process.</param>
         /// <returns>transaction response</returns>
         public BankstoreServResponse ConfirmPurchaseDcc(string transReference, string dccCurrency, string dccSession)
@@ -319,7 +319,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
 
                 string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry = string.Empty;
                 string dsMerchantCurrency, dsResponse = string.Empty;
@@ -359,8 +359,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Executes a return of a payment web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
         /// <param name="authCode">authCode de la operación original a devolver</param>
@@ -374,7 +374,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId = string.Empty;
 
                 string dsResponse = wsProxy.execute_refund(merchantCode, terminal, idPayUser, tokenPayUser, ref authCode, ref transReference, ref currency, signature, ip, amount, out dsErrorId);
@@ -408,7 +408,7 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Create a subscription in PayTPV on a card.  IMPORTANTES !!! This direct input must be activated by PayTPV.
+        /// Create a subscription in PayCOMET on a card.  IMPORTANTES !!! This direct input must be activated by PayCOMET.
         /// In default input method card for PCI-DSS compliance should be CreateSubscriptionUrl or CreateSubscriptionToken
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
@@ -433,7 +433,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsTokenUser, dsMerchantAuthCode, dsMerchantCardCountry = string.Empty;
 
                 string dsExecute = string.Empty;
@@ -476,10 +476,10 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Modifies a subscription PayTPV on a card.
+        /// Modifies a subscription PayCOMET on a card.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
         /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
@@ -495,7 +495,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantCardCountry, dsMerchantAuthCode, dsSubscriptionCurrency = string.Empty;
 
                 string dsSubscriptionOrder = wsProxy.edit_subscription(merchantCode, terminal, ref idPayUser, ref tokenPayUser,
@@ -535,10 +535,10 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Deletes a subscription PayTPV on a card.
+        /// Deletes a subscription PayCOMET on a card.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <returns>transaction response</returns>
         public BankstoreServResponse RemoveSubscription(string idPayUser, string tokenPayUser)
         {
@@ -549,7 +549,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId = string.Empty;
 
                 string dsResponse = wsProxy.remove_subscription(merchantCode, terminal, idPayUser, tokenPayUser, signature, ip, out dsErrorId);
@@ -580,10 +580,10 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Create a subscription in PayTPV on a previously tokenized card.
+        /// Create a subscription in PayCOMET on a previously tokenized card.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
         /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="transReference">transReference unique identifier payment</param>
@@ -601,7 +601,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
 
                 string dsErrorId, dsMerchantCardCountry = string.Empty;
 
@@ -646,8 +646,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Create a pre-authorization by web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
@@ -664,7 +664,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantCardCountry, dsResponse = string.Empty;
 
                 string dsMerchantData = string.Empty;
@@ -707,8 +707,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Confirm a pre-authorization previously sent by web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -722,7 +722,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
                 string dsMerchantCurrency = wsProxy.preauthorization_confirm(merchantCode, terminal, idPayUser, tokenPayUser, ref amount,
@@ -764,8 +764,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Cancels a pre-authorization previously sent by web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -779,7 +779,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
                 string dsMerchantCurrency = wsProxy.preauthorization_cancel(merchantCode, terminal, idPayUser, tokenPayUser, ref amount,
@@ -819,8 +819,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Confirm deferred preauthorization by web service. Once and authorized an operation deferred pre-authorization can be confirmed for the effective recovery within 72 hours; after that date, deferred pre-authorizations lose their validity.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -834,7 +834,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
                 string dsMerchantCurrency = wsProxy.deferred_preauthorization_confirm(merchantCode, terminal, idPayUser, tokenPayUser,
@@ -875,8 +875,8 @@ namespace Api.PayTPVService
         /// <summary>
         /// Cancels a deferred preauthorization by web service.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -890,7 +890,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsMerchantAuthCode, dsMerchantCardCountry, dsResponse = string.Empty;
 
                 string dsMerchantCurrency = wsProxy.deferred_preauthorization_cancel(merchantCode, terminal, idPayUser, tokenPayUser,
@@ -931,7 +931,7 @@ namespace Api.PayTPVService
         /// <summary>
         /// Add a user by using web service BankStore JET
         /// </summary>
-        /// <param name="jetToken">jetToken temporary user Token in PayTPV</param>
+        /// <param name="jetToken">jetToken temporary user Token in PayCOMET</param>
         /// <returns>transaction response</returns>
         public BankstoreServResponse AddUserToken(string jetToken)
         {
@@ -942,7 +942,7 @@ namespace Api.PayTPVService
 
             try
             {
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
                 string dsErrorId, dsTokenUser = string.Empty;
 
                 string dsIdUser = wsProxy.add_user_token(merchantCode, terminal, jetToken, jetId, signature, ip,
@@ -976,7 +976,7 @@ namespace Api.PayTPVService
         }
 
         /// <summary>
-        /// Executes a payment for web service with the "payment by reference" for the migration to PayTpv
+        /// Executes a payment for web service with the "payment by reference" for the migration to PayComet
         /// </summary>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
@@ -993,7 +993,7 @@ namespace Api.PayTPVService
                 var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + terminal + amount + transReference + rToken + password);
                 var ip = ipAddress;
 
-                PAYTPV_BankStoreGatewayPortClient wsProxy = new PAYTPV_BankStoreGatewayPortClient();
+                PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
 
                 string dsErrorId, dsMerchantCardCountry, dsResponse = string.Empty;
                 string authCode = wsProxy.execute_purchase_rtoken(merchantCode, terminal, ref amount, ref transReference, rToken,

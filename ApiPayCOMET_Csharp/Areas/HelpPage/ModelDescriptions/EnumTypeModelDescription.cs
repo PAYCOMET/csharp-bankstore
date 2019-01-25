@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions
+namespace ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions
 {
     public class EnumTypeModelDescription : ModelDescription
     {

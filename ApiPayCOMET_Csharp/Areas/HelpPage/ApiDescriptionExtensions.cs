@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage
+namespace ApiPayCOMET_Csharp.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPayTPV_Csharp", "ApiPayTPV_Csharp\ApiPayTPV_Csharp.csproj", "{4B7F8FDE-8B73-4621-A3F2-4CE52594C3E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiPayCOMET_Csharp", "ApiPayCOMET_Csharp\ApiPayCOMET_Csharp.csproj", "{4B7F8FDE-8B73-4621-A3F2-4CE52594C3E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.PayTPVService", "Api.PayTPVService\Api.PayTPVService.csproj", "{B08BD1FF-ECEA-48BE-9673-E0BE4D1E5C69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.PayCOMETService", "Api.PayCOMETService\Api.PayCOMETService.csproj", "{B08BD1FF-ECEA-48BE-9673-E0BE4D1E5C69}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -13,12 +13,12 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://giviniinternet.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = Api.PayTPVService\\Api.PayTPVService.csproj
-		SccProjectName1 = Api.PayTPVService
-		SccLocalPath1 = Api.PayTPVService
-		SccProjectUniqueName2 = ApiPayTPV_Csharp\\ApiPayTPV_Csharp.csproj
-		SccProjectName2 = ApiPayTPV_Csharp
-		SccLocalPath2 = ApiPayTPV_Csharp
+		SccProjectUniqueName1 = Api.PayCOMETService\\Api.PayCOMETService.csproj
+		SccProjectName1 = Api.PayCOMETService
+		SccLocalPath1 = Api.PayCOMETService
+		SccProjectUniqueName2 = ApiPayCOMET_Csharp\\ApiPayCOMET_Csharp.csproj
+		SccProjectName2 = ApiPayCOMET_Csharp
+		SccLocalPath2 = ApiPayCOMET_Csharp
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

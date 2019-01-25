@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions;
+using ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage.Models
+namespace ApiPayCOMET_Csharp.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

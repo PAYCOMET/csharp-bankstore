@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace ApiPayTPV_Csharp
+namespace ApiPayCOMET_Csharp
 {
     public class FilterConfig
     {

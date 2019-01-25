@@ -8,160 +8,160 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Api.PayTPVService.Services.BankStoreGatewayService {
+namespace Api.PayCOMETService.Services.BankStoreGatewayService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="urn:PAYTPV_BankStoreGateway", ConfigurationName="Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort")]
-    public interface PAYTPV_BankStoreGatewayPort {
+    [System.ServiceModel.ServiceContractAttribute(Namespace="urn:PAYCOMET_BankStoreGateway", ConfigurationName="Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort")]
+    public interface PAYCOMET_BankStoreGatewayPort {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#add_user", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.add_userResponse add_user(Api.PayTPVService.Services.BankStoreGatewayService.add_userRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.add_userResponse add_user(Api.PayCOMETService.Services.BankStoreGatewayService.add_userRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#add_user", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.add_userResponse> add_userAsync(Api.PayTPVService.Services.BankStoreGatewayService.add_userRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.add_userResponse> add_userAsync(Api.PayCOMETService.Services.BankStoreGatewayService.add_userRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#add_user_token", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenResponse add_user_token(Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenResponse add_user_token(Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#add_user_token", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenResponse> add_user_tokenAsync(Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenResponse> add_user_tokenAsync(Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#info_user", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.info_userResponse info_user(Api.PayTPVService.Services.BankStoreGatewayService.info_userRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.info_userResponse info_user(Api.PayCOMETService.Services.BankStoreGatewayService.info_userRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#info_user", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.info_userResponse> info_userAsync(Api.PayTPVService.Services.BankStoreGatewayService.info_userRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.info_userResponse> info_userAsync(Api.PayCOMETService.Services.BankStoreGatewayService.info_userRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#remove_user", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.remove_userResponse remove_user(Api.PayTPVService.Services.BankStoreGatewayService.remove_userRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.remove_userResponse remove_user(Api.PayCOMETService.Services.BankStoreGatewayService.remove_userRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#remove_user", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.remove_userResponse> remove_userAsync(Api.PayTPVService.Services.BankStoreGatewayService.remove_userRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.remove_userResponse> remove_userAsync(Api.PayCOMETService.Services.BankStoreGatewayService.remove_userRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_purchase", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseResponse execute_purchase(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseResponse execute_purchase(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_purchase", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseResponse> execute_purchaseAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseResponse> execute_purchaseAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_purchase_dcc", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccResponse execute_purchase_dcc(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccResponse execute_purchase_dcc(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_purchase_dcc", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccResponse> execute_purchase_dccAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccResponse> execute_purchase_dccAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#confirm_purchase_dcc", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccResponse confirm_purchase_dcc(Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccResponse confirm_purchase_dcc(Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#confirm_purchase_dcc", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccResponse> confirm_purchase_dccAsync(Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccResponse> confirm_purchase_dccAsync(Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_refund", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_refundResponse execute_refund(Api.PayTPVService.Services.BankStoreGatewayService.execute_refundRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundResponse execute_refund(Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_refund", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_refundResponse> execute_refundAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_refundRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundResponse> execute_refundAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#create_subscription", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionResponse create_subscription(Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionResponse create_subscription(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#create_subscription", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionResponse> create_subscriptionAsync(Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionResponse> create_subscriptionAsync(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#edit_subscription", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionResponse edit_subscription(Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionResponse edit_subscription(Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#edit_subscription", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionResponse> edit_subscriptionAsync(Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionResponse> edit_subscriptionAsync(Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#remove_subscription", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionResponse remove_subscription(Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionResponse remove_subscription(Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#remove_subscription", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionResponse> remove_subscriptionAsync(Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionResponse> remove_subscriptionAsync(Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#create_subscription_token", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenResponse create_subscription_token(Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenResponse create_subscription_token(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#create_subscription_token", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenResponse> create_subscription_tokenAsync(Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenResponse> create_subscription_tokenAsync(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#create_preauthorization", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationResponse create_preauthorization(Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationResponse create_preauthorization(Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#create_preauthorization", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationResponse> create_preauthorizationAsync(Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationResponse> create_preauthorizationAsync(Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#preauthorization_confirm", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmResponse preauthorization_confirm(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmResponse preauthorization_confirm(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#preauthorization_confirm", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmResponse> preauthorization_confirmAsync(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmResponse> preauthorization_confirmAsync(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#preauthorization_cancel", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelResponse preauthorization_cancel(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelResponse preauthorization_cancel(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#preauthorization_cancel", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelResponse> preauthorization_cancelAsync(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelResponse> preauthorization_cancelAsync(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#deferred_preauthorization_con" +
             "firm", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse deferred_preauthorization_confirm(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse deferred_preauthorization_confirm(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#deferred_preauthorization_con" +
             "firm", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse> deferred_preauthorization_confirmAsync(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse> deferred_preauthorization_confirmAsync(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#deferred_preauthorization_can" +
             "cel", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse deferred_preauthorization_cancel(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse deferred_preauthorization_cancel(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#deferred_preauthorization_can" +
             "cel", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse> deferred_preauthorization_cancelAsync(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse> deferred_preauthorization_cancelAsync(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_purchase_rtoken", ReplyAction="*")]
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse execute_purchase_rtoken(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request);
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse execute_purchase_rtoken(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.xmlsoap.org/soap/envelope/#BankStore#execute_purchase_rtoken", ReplyAction="*")]
-        System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse> execute_purchase_rtokenAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request);
+        System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse> execute_purchase_rtokenAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -1790,39 +1790,39 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface PAYTPV_BankStoreGatewayPortChannel : Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort, System.ServiceModel.IClientChannel {
+    public interface PAYCOMET_BankStoreGatewayPortChannel : Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class PAYTPV_BankStoreGatewayPortClient : System.ServiceModel.ClientBase<Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort>, Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort {
+    public partial class PAYCOMET_BankStoreGatewayPortClient : System.ServiceModel.ClientBase<Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort>, Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort {
         
-        public PAYTPV_BankStoreGatewayPortClient() {
+        public PAYCOMET_BankStoreGatewayPortClient() {
         }
         
-        public PAYTPV_BankStoreGatewayPortClient(string endpointConfigurationName) : 
+        public PAYCOMET_BankStoreGatewayPortClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public PAYTPV_BankStoreGatewayPortClient(string endpointConfigurationName, string remoteAddress) : 
+        public PAYCOMET_BankStoreGatewayPortClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public PAYTPV_BankStoreGatewayPortClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public PAYCOMET_BankStoreGatewayPortClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public PAYTPV_BankStoreGatewayPortClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public PAYCOMET_BankStoreGatewayPortClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.add_userResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.add_user(Api.PayTPVService.Services.BankStoreGatewayService.add_userRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.add_userResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.add_user(Api.PayCOMETService.Services.BankStoreGatewayService.add_userRequest request) {
             return base.Channel.add_user(request);
         }
         
         public string add_user(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_MERCHANT_PAN, string DS_MERCHANT_EXPIRYDATE, string DS_MERCHANT_CVV2, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, string DS_MERCHANT_CARDHOLDERNAME, out string DS_TOKEN_USER, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.add_userRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.add_userRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.add_userRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.add_userRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_MERCHANT_PAN = DS_MERCHANT_PAN;
@@ -1831,53 +1831,53 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
             inValue.DS_MERCHANT_CARDHOLDERNAME = DS_MERCHANT_CARDHOLDERNAME;
-            Api.PayTPVService.Services.BankStoreGatewayService.add_userResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).add_user(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.add_userResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).add_user(inValue);
             DS_TOKEN_USER = retVal.DS_TOKEN_USER;
             DS_ERROR_ID = retVal.DS_ERROR_ID;
             return retVal.DS_IDUSER;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.add_userResponse> add_userAsync(Api.PayTPVService.Services.BankStoreGatewayService.add_userRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.add_userResponse> add_userAsync(Api.PayCOMETService.Services.BankStoreGatewayService.add_userRequest request) {
             return base.Channel.add_userAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.add_user_token(Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.add_user_token(Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenRequest request) {
             return base.Channel.add_user_token(request);
         }
         
         public string add_user_token(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_MERCHANT_JETTOKEN, string DS_MERCHANT_JETID, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_TOKEN_USER, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_MERCHANT_JETTOKEN = DS_MERCHANT_JETTOKEN;
             inValue.DS_MERCHANT_JETID = DS_MERCHANT_JETID;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).add_user_token(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).add_user_token(inValue);
             DS_TOKEN_USER = retVal.DS_TOKEN_USER;
             DS_ERROR_ID = retVal.DS_ERROR_ID;
             return retVal.DS_IDUSER;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenResponse> add_user_tokenAsync(Api.PayTPVService.Services.BankStoreGatewayService.add_user_tokenRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenResponse> add_user_tokenAsync(Api.PayCOMETService.Services.BankStoreGatewayService.add_user_tokenRequest request) {
             return base.Channel.add_user_tokenAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.info_userResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.info_user(Api.PayTPVService.Services.BankStoreGatewayService.info_userRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.info_userResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.info_user(Api.PayCOMETService.Services.BankStoreGatewayService.info_userRequest request) {
             return base.Channel.info_user(request);
         }
         
         public string info_user(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_ERROR_ID, out string DS_CARD_BRAND, out string DS_CARD_TYPE, out string DS_CARD_I_COUNTRY_ISO3, out string DS_EXPIRYDATE) {
-            Api.PayTPVService.Services.BankStoreGatewayService.info_userRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.info_userRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.info_userRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.info_userRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
             inValue.DS_TOKEN_USER = DS_TOKEN_USER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.info_userResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).info_user(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.info_userResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).info_user(inValue);
             DS_ERROR_ID = retVal.DS_ERROR_ID;
             DS_CARD_BRAND = retVal.DS_CARD_BRAND;
             DS_CARD_TYPE = retVal.DS_CARD_TYPE;
@@ -1886,34 +1886,34 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_PAN;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.info_userResponse> info_userAsync(Api.PayTPVService.Services.BankStoreGatewayService.info_userRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.info_userResponse> info_userAsync(Api.PayCOMETService.Services.BankStoreGatewayService.info_userRequest request) {
             return base.Channel.info_userAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.remove_userResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.remove_user(Api.PayTPVService.Services.BankStoreGatewayService.remove_userRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.remove_userResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.remove_user(Api.PayCOMETService.Services.BankStoreGatewayService.remove_userRequest request) {
             return base.Channel.remove_user(request);
         }
         
         public string remove_user(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.remove_userRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.remove_userRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.remove_userRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.remove_userRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
             inValue.DS_TOKEN_USER = DS_TOKEN_USER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.remove_userResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).remove_user(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.remove_userResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).remove_user(inValue);
             DS_ERROR_ID = retVal.DS_ERROR_ID;
             return retVal.DS_RESPONSE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.remove_userResponse> remove_userAsync(Api.PayTPVService.Services.BankStoreGatewayService.remove_userRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.remove_userResponse> remove_userAsync(Api.PayCOMETService.Services.BankStoreGatewayService.remove_userRequest request) {
             return base.Channel.remove_userAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.execute_purchase(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.execute_purchase(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseRequest request) {
             return base.Channel.execute_purchase(request);
         }
         
@@ -1934,7 +1934,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
                     out string DS_MERCHANT_CARDCOUNTRY, 
                     out string DS_RESPONSE, 
                     out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -1948,7 +1948,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_OWNER = DS_MERCHANT_OWNER;
             inValue.DS_MERCHANT_SCORING = DS_MERCHANT_SCORING;
             inValue.DS_MERCHANT_DATA = DS_MERCHANT_DATA;
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).execute_purchase(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).execute_purchase(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_CURRENCY = retVal.DS_MERCHANT_CURRENCY;
@@ -1958,12 +1958,12 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_AUTHCODE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseResponse> execute_purchaseAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchaseRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseResponse> execute_purchaseAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchaseRequest request) {
             return base.Channel.execute_purchaseAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.execute_purchase_dcc(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.execute_purchase_dcc(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccRequest request) {
             return base.Channel.execute_purchase_dcc(request);
         }
         
@@ -1988,7 +1988,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
                     out string DS_MERCHANT_DCC_CARDCOUNTRY, 
                     out string DS_RESPONSE, 
                     out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -1999,7 +1999,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
             inValue.DS_MERCHANT_PRODUCTDESCRIPTION = DS_MERCHANT_PRODUCTDESCRIPTION;
             inValue.DS_MERCHANT_OWNER = DS_MERCHANT_OWNER;
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).execute_purchase_dcc(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).execute_purchase_dcc(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_DCC_SESSION = retVal.DS_MERCHANT_DCC_SESSION;
@@ -2015,24 +2015,24 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_CURRENCY;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccResponse> execute_purchase_dccAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_dccRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccResponse> execute_purchase_dccAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_dccRequest request) {
             return base.Channel.execute_purchase_dccAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.confirm_purchase_dcc(Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.confirm_purchase_dcc(Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request) {
             return base.Channel.confirm_purchase_dcc(request);
         }
         
         public string confirm_purchase_dcc(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, ref string DS_MERCHANT_ORDER, string DS_MERCHANT_DCC_CURRENCY, string DS_MERCHANT_DCC_SESSION, string DS_MERCHANT_MERCHANTSIGNATURE, out string DS_MERCHANT_CURRENCY, out string DS_MERCHANT_AUTHCODE, out string DS_MERCHANT_CARDCOUNTRY, out string DS_RESPONSE, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_MERCHANT_ORDER = DS_MERCHANT_ORDER;
             inValue.DS_MERCHANT_DCC_CURRENCY = DS_MERCHANT_DCC_CURRENCY;
             inValue.DS_MERCHANT_DCC_SESSION = DS_MERCHANT_DCC_SESSION;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
-            Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).confirm_purchase_dcc(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).confirm_purchase_dcc(inValue);
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_CURRENCY = retVal.DS_MERCHANT_CURRENCY;
             DS_MERCHANT_AUTHCODE = retVal.DS_MERCHANT_AUTHCODE;
@@ -2042,17 +2042,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_AMOUNT;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccResponse> confirm_purchase_dccAsync(Api.PayTPVService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccResponse> confirm_purchase_dccAsync(Api.PayCOMETService.Services.BankStoreGatewayService.confirm_purchase_dccRequest request) {
             return base.Channel.confirm_purchase_dccAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_refundResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.execute_refund(Api.PayTPVService.Services.BankStoreGatewayService.execute_refundRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.execute_refund(Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundRequest request) {
             return base.Channel.execute_refund(request);
         }
         
         public string execute_refund(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, ref string DS_MERCHANT_AUTHCODE, ref string DS_MERCHANT_ORDER, ref string DS_MERCHANT_CURRENCY, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, string DS_MERCHANT_AMOUNT, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_refundRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.execute_refundRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2063,7 +2063,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
             inValue.DS_MERCHANT_AMOUNT = DS_MERCHANT_AMOUNT;
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_refundResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).execute_refund(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).execute_refund(inValue);
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_CURRENCY = retVal.DS_MERCHANT_CURRENCY;
             DS_MERCHANT_AUTHCODE = retVal.DS_MERCHANT_AUTHCODE;
@@ -2071,12 +2071,12 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_RESPONSE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_refundResponse> execute_refundAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_refundRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundResponse> execute_refundAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_refundRequest request) {
             return base.Channel.execute_refundAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.create_subscription(Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.create_subscription(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionRequest request) {
             return base.Channel.create_subscription(request);
         }
         
@@ -2102,7 +2102,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
                     out string DS_MERCHANT_AUTHCODE, 
                     out string DS_MERCHANT_CARDCOUNTRY, 
                     out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_MERCHANT_PAN = DS_MERCHANT_PAN;
@@ -2120,7 +2120,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_CARDHOLDERNAME = DS_MERCHANT_CARDHOLDERNAME;
             inValue.DS_MERCHANT_SCORING = DS_MERCHANT_SCORING;
             inValue.DS_MERCHANT_DATA = DS_MERCHANT_DATA;
-            Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).create_subscription(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).create_subscription(inValue);
             DS_TOKEN_USER = retVal.DS_TOKEN_USER;
             DS_SUBSCRIPTION_AMOUNT = retVal.DS_SUBSCRIPTION_AMOUNT;
             DS_SUBSCRIPTION_ORDER = retVal.DS_SUBSCRIPTION_ORDER;
@@ -2131,17 +2131,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_IDUSER;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionResponse> create_subscriptionAsync(Api.PayTPVService.Services.BankStoreGatewayService.create_subscriptionRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionResponse> create_subscriptionAsync(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscriptionRequest request) {
             return base.Channel.create_subscriptionAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.edit_subscription(Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.edit_subscription(Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionRequest request) {
             return base.Channel.edit_subscription(request);
         }
         
         public string edit_subscription(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, ref string DS_IDUSER, ref string DS_TOKEN_USER, string DS_SUBSCRIPTION_STARTDATE, string DS_SUBSCRIPTION_ENDDATE, string DS_SUBSCRIPTION_PERIODICITY, ref string DS_SUBSCRIPTION_AMOUNT, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_EXECUTE, string DS_ORIGINAL_IP, out string DS_SUBSCRIPTION_CURRENCY, out string DS_MERCHANT_AUTHCODE, out string DS_MERCHANT_CARDCOUNTRY, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2153,7 +2153,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_EXECUTE = DS_EXECUTE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).edit_subscription(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).edit_subscription(inValue);
             DS_IDUSER = retVal.DS_IDUSER;
             DS_TOKEN_USER = retVal.DS_TOKEN_USER;
             DS_SUBSCRIPTION_AMOUNT = retVal.DS_SUBSCRIPTION_AMOUNT;
@@ -2164,34 +2164,34 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_SUBSCRIPTION_ORDER;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionResponse> edit_subscriptionAsync(Api.PayTPVService.Services.BankStoreGatewayService.edit_subscriptionRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionResponse> edit_subscriptionAsync(Api.PayCOMETService.Services.BankStoreGatewayService.edit_subscriptionRequest request) {
             return base.Channel.edit_subscriptionAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.remove_subscription(Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.remove_subscription(Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionRequest request) {
             return base.Channel.remove_subscription(request);
         }
         
         public string remove_subscription(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
             inValue.DS_TOKEN_USER = DS_TOKEN_USER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).remove_subscription(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).remove_subscription(inValue);
             DS_ERROR_ID = retVal.DS_ERROR_ID;
             return retVal.DS_RESPONSE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionResponse> remove_subscriptionAsync(Api.PayTPVService.Services.BankStoreGatewayService.remove_subscriptionRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionResponse> remove_subscriptionAsync(Api.PayCOMETService.Services.BankStoreGatewayService.remove_subscriptionRequest request) {
             return base.Channel.remove_subscriptionAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.create_subscription_token(Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.create_subscription_token(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenRequest request) {
             return base.Channel.create_subscription_token(request);
         }
         
@@ -2212,7 +2212,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
                     string DS_MERCHANT_DATA, 
                     out string DS_MERCHANT_CARDCOUNTRY, 
                     out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2227,7 +2227,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
             inValue.DS_MERCHANT_SCORING = DS_MERCHANT_SCORING;
             inValue.DS_MERCHANT_DATA = DS_MERCHANT_DATA;
-            Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).create_subscription_token(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).create_subscription_token(inValue);
             DS_IDUSER = retVal.DS_IDUSER;
             DS_TOKEN_USER = retVal.DS_TOKEN_USER;
             DS_SUBSCRIPTION_AMOUNT = retVal.DS_SUBSCRIPTION_AMOUNT;
@@ -2238,12 +2238,12 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_AUTHCODE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenResponse> create_subscription_tokenAsync(Api.PayTPVService.Services.BankStoreGatewayService.create_subscription_tokenRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenResponse> create_subscription_tokenAsync(Api.PayCOMETService.Services.BankStoreGatewayService.create_subscription_tokenRequest request) {
             return base.Channel.create_subscription_tokenAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.create_preauthorization(Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.create_preauthorization(Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationRequest request) {
             return base.Channel.create_preauthorization(request);
         }
         
@@ -2264,7 +2264,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
                     out string DS_MERCHANT_CARDCOUNTRY, 
                     out string DS_RESPONSE, 
                     out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2278,7 +2278,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_OWNER = DS_MERCHANT_OWNER;
             inValue.DS_MERCHANT_SCORING = DS_MERCHANT_SCORING;
             inValue.DS_MERCHANT_DATA = DS_MERCHANT_DATA;
-            Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).create_preauthorization(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).create_preauthorization(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_CURRENCY = retVal.DS_MERCHANT_CURRENCY;
@@ -2288,17 +2288,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_AUTHCODE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationResponse> create_preauthorizationAsync(Api.PayTPVService.Services.BankStoreGatewayService.create_preauthorizationRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationResponse> create_preauthorizationAsync(Api.PayCOMETService.Services.BankStoreGatewayService.create_preauthorizationRequest request) {
             return base.Channel.create_preauthorizationAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.preauthorization_confirm(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.preauthorization_confirm(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmRequest request) {
             return base.Channel.preauthorization_confirm(request);
         }
         
         public string preauthorization_confirm(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, ref string DS_MERCHANT_AMOUNT, ref string DS_MERCHANT_ORDER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_MERCHANT_AUTHCODE, out string DS_MERCHANT_CARDCOUNTRY, out string DS_RESPONSE, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2307,7 +2307,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_ORDER = DS_MERCHANT_ORDER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).preauthorization_confirm(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).preauthorization_confirm(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_AUTHCODE = retVal.DS_MERCHANT_AUTHCODE;
@@ -2317,17 +2317,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_CURRENCY;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmResponse> preauthorization_confirmAsync(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_confirmRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmResponse> preauthorization_confirmAsync(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_confirmRequest request) {
             return base.Channel.preauthorization_confirmAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.preauthorization_cancel(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.preauthorization_cancel(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelRequest request) {
             return base.Channel.preauthorization_cancel(request);
         }
         
         public string preauthorization_cancel(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, ref string DS_MERCHANT_AMOUNT, ref string DS_MERCHANT_ORDER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_MERCHANT_AUTHCODE, out string DS_MERCHANT_CARDCOUNTRY, out string DS_RESPONSE, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2336,7 +2336,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_ORDER = DS_MERCHANT_ORDER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).preauthorization_cancel(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).preauthorization_cancel(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_AUTHCODE = retVal.DS_MERCHANT_AUTHCODE;
@@ -2346,17 +2346,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_CURRENCY;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelResponse> preauthorization_cancelAsync(Api.PayTPVService.Services.BankStoreGatewayService.preauthorization_cancelRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelResponse> preauthorization_cancelAsync(Api.PayCOMETService.Services.BankStoreGatewayService.preauthorization_cancelRequest request) {
             return base.Channel.preauthorization_cancelAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.deferred_preauthorization_confirm(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.deferred_preauthorization_confirm(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request) {
             return base.Channel.deferred_preauthorization_confirm(request);
         }
         
         public string deferred_preauthorization_confirm(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, ref string DS_MERCHANT_AMOUNT, ref string DS_MERCHANT_ORDER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_MERCHANT_AUTHCODE, out string DS_MERCHANT_CARDCOUNTRY, out string DS_RESPONSE, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2365,7 +2365,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_ORDER = DS_MERCHANT_ORDER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).deferred_preauthorization_confirm(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).deferred_preauthorization_confirm(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_AUTHCODE = retVal.DS_MERCHANT_AUTHCODE;
@@ -2375,17 +2375,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_CURRENCY;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse> deferred_preauthorization_confirmAsync(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmResponse> deferred_preauthorization_confirmAsync(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_confirmRequest request) {
             return base.Channel.deferred_preauthorization_confirmAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.deferred_preauthorization_cancel(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.deferred_preauthorization_cancel(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request) {
             return base.Channel.deferred_preauthorization_cancel(request);
         }
         
         public string deferred_preauthorization_cancel(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, string DS_IDUSER, string DS_TOKEN_USER, ref string DS_MERCHANT_AMOUNT, ref string DS_MERCHANT_ORDER, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_ORIGINAL_IP, out string DS_MERCHANT_AUTHCODE, out string DS_MERCHANT_CARDCOUNTRY, out string DS_RESPONSE, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_IDUSER = DS_IDUSER;
@@ -2394,7 +2394,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_ORDER = DS_MERCHANT_ORDER;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_ORIGINAL_IP = DS_ORIGINAL_IP;
-            Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).deferred_preauthorization_cancel(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).deferred_preauthorization_cancel(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_AUTHCODE = retVal.DS_MERCHANT_AUTHCODE;
@@ -2404,17 +2404,17 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_CURRENCY;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse> deferred_preauthorization_cancelAsync(Api.PayTPVService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelResponse> deferred_preauthorization_cancelAsync(Api.PayCOMETService.Services.BankStoreGatewayService.deferred_preauthorization_cancelRequest request) {
             return base.Channel.deferred_preauthorization_cancelAsync(request);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort.execute_purchase_rtoken(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request) {
+        Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort.execute_purchase_rtoken(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request) {
             return base.Channel.execute_purchase_rtoken(request);
         }
         
         public string execute_purchase_rtoken(string DS_MERCHANT_MERCHANTCODE, string DS_MERCHANT_TERMINAL, ref string DS_MERCHANT_AMOUNT, ref string DS_MERCHANT_ORDER, string DS_MERCHANT_IDENTIFIER, ref string DS_MERCHANT_CURRENCY, string DS_MERCHANT_MERCHANTSIGNATURE, string DS_MERCHANT_PRODUCTDESCRIPTION, out string DS_MERCHANT_CARDCOUNTRY, out string DS_RESPONSE, out string DS_ERROR_ID) {
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest inValue = new Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest();
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest inValue = new Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest();
             inValue.DS_MERCHANT_MERCHANTCODE = DS_MERCHANT_MERCHANTCODE;
             inValue.DS_MERCHANT_TERMINAL = DS_MERCHANT_TERMINAL;
             inValue.DS_MERCHANT_AMOUNT = DS_MERCHANT_AMOUNT;
@@ -2423,7 +2423,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             inValue.DS_MERCHANT_CURRENCY = DS_MERCHANT_CURRENCY;
             inValue.DS_MERCHANT_MERCHANTSIGNATURE = DS_MERCHANT_MERCHANTSIGNATURE;
             inValue.DS_MERCHANT_PRODUCTDESCRIPTION = DS_MERCHANT_PRODUCTDESCRIPTION;
-            Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse retVal = ((Api.PayTPVService.Services.BankStoreGatewayService.PAYTPV_BankStoreGatewayPort)(this)).execute_purchase_rtoken(inValue);
+            Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse retVal = ((Api.PayCOMETService.Services.BankStoreGatewayService.PAYCOMET_BankStoreGatewayPort)(this)).execute_purchase_rtoken(inValue);
             DS_MERCHANT_AMOUNT = retVal.DS_MERCHANT_AMOUNT;
             DS_MERCHANT_ORDER = retVal.DS_MERCHANT_ORDER;
             DS_MERCHANT_CURRENCY = retVal.DS_MERCHANT_CURRENCY;
@@ -2433,7 +2433,7 @@ namespace Api.PayTPVService.Services.BankStoreGatewayService {
             return retVal.DS_MERCHANT_AUTHCODE;
         }
         
-        public System.Threading.Tasks.Task<Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse> execute_purchase_rtokenAsync(Api.PayTPVService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request) {
+        public System.Threading.Tasks.Task<Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenResponse> execute_purchase_rtokenAsync(Api.PayCOMETService.Services.BankStoreGatewayService.execute_purchase_rtokenRequest request) {
             return base.Channel.execute_purchase_rtokenAsync(request);
         }
     }

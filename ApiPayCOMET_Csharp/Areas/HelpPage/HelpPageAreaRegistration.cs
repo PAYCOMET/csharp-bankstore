@@ -1,7 +1,7 @@
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage
+namespace ApiPayCOMET_Csharp.Areas.HelpPage
 {
     public class HelpPageAreaRegistration : AreaRegistration
     {

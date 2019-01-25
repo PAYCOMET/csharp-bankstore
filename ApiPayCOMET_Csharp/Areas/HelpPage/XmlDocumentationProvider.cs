@@ -5,9 +5,9 @@ using System.Reflection;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using System.Xml.XPath;
-using ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions;
+using ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage
+namespace ApiPayCOMET_Csharp.Areas.HelpPage
 {
     /// <summary>
     /// A custom <see cref="IDocumentationProvider"/> that reads the API documentation from an XML documentation file.

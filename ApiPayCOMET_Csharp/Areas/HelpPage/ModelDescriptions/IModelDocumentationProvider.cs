@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions
+namespace ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions
 {
     public interface IModelDocumentationProvider
     {

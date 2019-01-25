@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Api.PayTPVService.Utils
+namespace Api.PayCOMETService.Utils
 {
     public class Cryptography
     {

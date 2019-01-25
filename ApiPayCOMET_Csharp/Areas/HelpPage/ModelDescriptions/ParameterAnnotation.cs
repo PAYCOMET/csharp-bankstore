@@ -1,6 +1,6 @@
 using System;
 
-namespace ApiPayTPV_Csharp.Areas.HelpPage.ModelDescriptions
+namespace ApiPayCOMET_Csharp.Areas.HelpPage.ModelDescriptions
 {
     public class ParameterAnnotation
     {

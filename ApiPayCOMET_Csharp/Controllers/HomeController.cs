@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace ApiPayTPV_Csharp.Controllers
+namespace ApiPayCOMET_Csharp.Controllers
 {
     public class HomeController : Controller
     {

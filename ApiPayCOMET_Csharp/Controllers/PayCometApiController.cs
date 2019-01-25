@@ -1,15 +1,15 @@
 ﻿using System.Web.Http;
 using System.Configuration;
-using Api.PayTPVService;
-using Api.PayTPVService.Responses;
+using Api.PayCOMETService;
+using Api.PayCOMETService.Responses;
 
-namespace ApiPayTPV_Csharp.Controllers
+namespace ApiPayCOMET_Csharp.Controllers
 {
     /// <summary>
     /// PayTVP Api
     /// </summary>
     [RoutePrefix("api/PayTVP")]
-    public class PayTPVApiController : ApiController
+    public class PayCOMETApiController : ApiController
     {
         private string merchantCode = ConfigurationManager.AppSettings["MerchantCodeTest"];
         private string terminal = ConfigurationManager.AppSettings["TerminalTest"];
@@ -17,7 +17,7 @@ namespace ApiPayTPV_Csharp.Controllers
         private string ipAddress = ConfigurationManager.AppSettings["IPTest"];
         private string jetId = ConfigurationManager.AppSettings["JetIdTest"];
 
-        public PayTPVApiController()
+        public PayCOMETApiController()
         {
 
         }
@@ -32,13 +32,13 @@ namespace ApiPayTPV_Csharp.Controllers
         [HttpGet]
         public BankstoreServResponse GetUserInfo(string idPayUser, string tokenUser)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.InfoUser(idPayUser, tokenUser);
             return servResponse;
         }
 
         /// <summary>
-        /// Add a card to PayTPV.  IMPORTANTES !!! This direct input must be activated by PayTPV.
+        /// Add a card to PayCOMET.  IMPORTANTES !!! This direct input must be activated by PayCOMET.
         /// In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
@@ -49,23 +49,23 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("AddUser")]
         public BankstoreServResponse AddUser(string pan, string expDate, string cvv)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.AddUser(pan, expDate, cvv);
             return servResponse;
         }
 
 
         /// <summary>
-        /// Removes a user through call soap PayTPV
+        /// Removes a user through call soap PayCOMET
         /// </summary>
-        /// <param name="idPayUser">user ID PayTPV</param>
-        /// <param name="tokenPayUser">User Token PayTPV</param>
+        /// <param name="idPayUser">user ID PayCOMET</param>
+        /// <param name="tokenPayUser">User Token PayCOMET</param>
         /// <returns>Object A transaction response</returns>
         [HttpPost]
         [Route("RemoveUser")]
         public BankstoreServResponse RemoveUser(string idPayUser, string tokenPayUser)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.RemoveUser(idPayUser, tokenPayUser);
             return servResponse;
         }
@@ -73,8 +73,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Execute a web service payment
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
@@ -87,7 +87,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecutePurchase")]
         public BankstoreServResponse ExecutePurchase(string idPayUser, string tokenPayUser, string amount, string transReference, string currency, string productDescription = null, string owner = null, string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecutePurchase(idPayUser, tokenPayUser, amount, transReference, currency, productDescription, owner, scoring);
             return servResponse;
         }
@@ -95,8 +95,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Execute a web service payment with DCC operational
         /// </summary>
-        /// <param name="idPayUser">idPayUser User ID in PayTPV</param>
-        /// <param name="tokenPayUser">tokenPayUser user Token in PayTPV</param>
+        /// <param name="idPayUser">idPayUser User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">tokenPayUser user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="productDescription">Product Description Product Description</param>
@@ -107,7 +107,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecutePurchaseDcc")]
         public BankstoreServResponse ExecutePurchaseDcc(string idPayUser, string tokenPayUser, string amount, string transReference, string productDescription = null, string owner = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecutePurchaseDcc(idPayUser, tokenPayUser, amount, transReference, productDescription, owner);
             return servResponse;
         }
@@ -117,7 +117,7 @@ namespace ApiPayTPV_Csharp.Controllers
         /// Confirm a payment by web service with DCC operational
         /// </summary>
         /// <param name="transReference">transReference unique identifier payment</param>
-        /// <param name="dccCurrency">dccCurrency chosen currency transaction. It may be the product of PayTPV native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
+        /// <param name="dccCurrency">dccCurrency chosen currency transaction. It may be the product of PayCOMET native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
         /// <param name="dccSession">dccSession sent in the same session execute_purchase_dcc process.</param>
         /// <returns>transaction response</returns>
         /// 
@@ -125,7 +125,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ConfirmPurchaseDcc")]
         public BankstoreServResponse ConfirmPurchaseDcc(string transReference, string dccCurrency, string dccSession)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ConfirmPurchaseDcc(transReference, dccCurrency, dccSession);
             return servResponse;
         }
@@ -133,8 +133,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Executes a return of a payment web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
         /// <param name="authCode">AuthCode de la operación original a devolver</param>
@@ -145,13 +145,13 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecuteRefund")]
         public BankstoreServResponse ExecuteRefund(string idPayUser, string tokenPayUser, string transReference, string currency, string authCode, string amount = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecuteRefund(idPayUser, tokenPayUser, transReference, currency, authCode, amount);
             return servResponse;
         }
 
         /// <summary>
-        /// Create a subscription in PayTPV on a card.  IMPORTANTES !!! This direct input must be activated by PayTPV.
+        /// Create a subscription in PayCOMET on a card.  IMPORTANTES !!! This direct input must be activated by PayCOMET.
         /// In default input method card for PCI-DSS compliance should be CreateSubscriptionUrl or CreateSubscriptionToken
         /// </summary>
         /// <param name="pan">card number without spaces or dashes</param>
@@ -170,16 +170,16 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("CreateSubscription")]
         public BankstoreServResponse CreateSubscription(string pan, string expDate, string cvv, string startDate, string endDate, string transReference, string periodicity, string amount, string currency, string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.CreateSubscription(pan, expDate, cvv, startDate, endDate, transReference, periodicity, amount, currency, scoring);
             return servResponse;
         }
 
         /// <summary>
-        /// Modifies a subscription PayTPV on a card.
+        /// Modifies a subscription PayCOMET on a card.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
         /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="periodicity">periodicity Frequency of subscription. In days.</param>
@@ -191,32 +191,32 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("EditSubscription")]
         public BankstoreServResponse EditSubscription(string idPayUser, string tokenPayUser, string startDate, string endDate, string periodicity, string amount, string execute)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.EditSubscription(idPayUser, tokenPayUser, startDate, endDate, periodicity, amount, execute);
             return servResponse;
         }
 
         /// <summary>
-        /// Deletes a subscription PayTPV on a card.
+        /// Deletes a subscription PayCOMET on a card.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <returns>transaction response</returns>
         /// 
         [HttpPost]
         [Route("RemoveSubscription")]
         public BankstoreServResponse RemoveSubscription(string idPayUser, string tokenPayUser)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.RemoveSubscription(idPayUser, tokenPayUser);
             return servResponse;
         }
 
         /// <summary>
-        /// Create a subscription in PayTPV on a previously tokenized card.
+        /// Create a subscription in PayCOMET on a previously tokenized card.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
         /// <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
         /// <param name="transReference">transReference unique identifier payment</param>
@@ -230,7 +230,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("CreateSubscriptionToken")]
         public BankstoreServResponse CreateSubscriptionToken(string idPayUser, string tokenPayUser, string startDate, string endDate, string transReference, string periodicity, string amount, string currency, string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.CreateSubscriptionToken(idPayUser, tokenPayUser, startDate, endDate, transReference, periodicity, amount, currency, scoring);
             return servResponse;
         }
@@ -238,8 +238,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Create a pre-authorization by web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <param name="currency">currency identifier transaction currency</param>
@@ -252,7 +252,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("CreatePreauthorization")]
         public BankstoreServResponse CreatePreauthorization(string idPayUser, string tokenPayUser, string amount, string transReference, string currency, string productDescription = null, string owner = null, string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.CreatePreauthorization(idPayUser, tokenPayUser, amount, transReference, currency, productDescription, owner, scoring);
             return servResponse;
         }
@@ -260,8 +260,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Confirm a pre-authorization previously sent by web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -270,7 +270,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("PreauthorizationConfirm")]
         public BankstoreServResponse PreauthorizationConfirm(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.PreauthorizationConfirm(idPayUser, tokenPayUser, amount, transReference);
             return servResponse;
         }
@@ -278,8 +278,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Cancels a pre-authorization previously sent by web service
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -288,7 +288,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("PreauthorizationCancel")]
         public BankstoreServResponse PreauthorizationCancel(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.PreauthorizationCancel(idPayUser, tokenPayUser, amount, transReference);
             return servResponse;
         }
@@ -296,8 +296,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Confirm deferred preauthorization by web service. Once and authorized an operation deferred pre-authorization can be confirmed for the effective recovery within 72 hours; after that date, deferred pre-authorizations lose their validity.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -306,7 +306,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("DeferredPreauthorizationConfirm")]
         public BankstoreServResponse DeferredPreauthorizationConfirm(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.DeferredPreauthorizationConfirm(idPayUser, tokenPayUser, amount, transReference);
             return servResponse;
         }
@@ -314,8 +314,8 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Cancels a deferred preauthorization by web service.
         /// </summary>
-        /// <param name="idPayUser">User ID in PayTPV</param>
-        /// <param name="tokenPayUser">user Token in PayTPV</param>
+        /// <param name="idPayUser">User ID in PayCOMET</param>
+        /// <param name="tokenPayUser">user Token in PayCOMET</param>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
         /// <returns>transaction response</returns>
@@ -324,7 +324,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("DeferredPreauthorizationCancel")]
         public BankstoreServResponse DeferredPreauthorizationCancel(string idPayUser, string tokenPayUser, string amount, string transReference)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.DeferredPreauthorizationCancel(idPayUser, tokenPayUser, amount, transReference);
             return servResponse;
         }
@@ -332,14 +332,14 @@ namespace ApiPayTPV_Csharp.Controllers
         /// <summary>
         /// Add a user by using web service BankStore JET
         /// </summary>
-        /// <param name="jetToken">jetToken temporary user Token in PayTPV</param>
+        /// <param name="jetToken">jetToken temporary user Token in PayCOMET</param>
         /// <returns>transaction response</returns>
         /// 
         [HttpPost]
         [Route("AddUserToken")]
         public BankstoreServResponse AddUserToken(string jetToken)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress, jetId);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress, jetId);
             var servResponse = serviceAPI.AddUserToken(jetToken);
             return servResponse;
         }
@@ -360,7 +360,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecutePurchaseUrl")]
         public BankstoreServResponse ExecutePurchaseUrl(string transReference, string amount, string currency, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecutePurchaseUrl(transReference, amount, currency, lang, description, secure3D, scoring);
             return servResponse;
         }
@@ -383,7 +383,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecutePurchaseTokenUrl")]
         public BankstoreServResponse ExecutePurchaseTokenUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecutePurchaseTokenUrl(transReference, amount, currency, idUser, tokenUser, lang, description, secure3D, scoring);
             return servResponse;
         }
@@ -399,7 +399,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("AddUserUrl")]
         public BankstoreServResponse AddUserUrl(string transReference, string lang = "ES")
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.AddUserUrl(transReference, lang);
             return servResponse;
         }
@@ -422,7 +422,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("CreateSubscriptionUrl")]
         public BankstoreServResponse CreateSubscriptionUrl(string transReference, string amount, string currency, string startDate, string endDate, string periodicity, string lang = "ES", string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.CreateSubscriptionUrl(transReference, amount, currency, startDate, endDate, periodicity, lang, secure3D, scoring);
             return servResponse;
         }
@@ -447,7 +447,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("CreateSubscriptionTokenUrl")]
         public BankstoreServResponse CreateSubscriptionTokenUrl(string transReference, string amount, string currency, string startDate, string endDate, string periodicity, string idUser, string tokenUser, string lang = "ES", string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.CreateSubscriptionTokenUrl(transReference, amount, currency, startDate, endDate, periodicity, idUser, tokenUser, lang, secure3D, scoring);
             return servResponse;
         }
@@ -468,7 +468,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("CreatePreauthorizationUrl")]
         public BankstoreServResponse CreatePreauthorizationUrl(string transReference, string amount, string currency, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.CreatePreauthorizationUrl(transReference, amount, currency, lang, description, secure3D, scoring);
             return servResponse;
         }
@@ -490,7 +490,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("PreauthorizationConfirmUrl")]
         public BankstoreServResponse PreauthorizationConfirmUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.PreauthorizationConfirmUrl(transReference, amount, currency, idUser, tokenUser, lang, description, secure3D);
             return servResponse;
         }
@@ -513,7 +513,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("PreauthorizationCancelUrl")]
         public BankstoreServResponse PreauthorizationCancelUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.PreauthorizationCancelUrl(transReference, amount, currency, idUser, tokenUser, lang, description, secure3D);
             return servResponse;
         }
@@ -536,7 +536,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecutePreauthorizationTokenUrl")]
         public BankstoreServResponse ExecutePreauthorizationTokenUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecutePreauthorizationTokenUrl(transReference, amount, currency, idUser, tokenUser, lang, description, secure3D, scoring);
             return servResponse;
         }
@@ -557,7 +557,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("DeferredPreauthorizationUrl")]
         public BankstoreServResponse DeferredPreauthorizationUrl(string transReference, string amount, string currency, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.DeferredPreauthorizationUrl(transReference, amount, currency, lang, description, secure3D, scoring);
             return servResponse;
         }
@@ -579,7 +579,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("DeferredPreauthorizationConfirmUrl")]
         public BankstoreServResponse DeferredPreauthorizationConfirmUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.DeferredPreauthorizationConfirmUrl(transReference, amount, currency, idUser, tokenUser, lang, description, secure3D);
             return servResponse;
         }
@@ -601,13 +601,13 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("DeferredPreauthorizationCancelUrl")]
         public BankstoreServResponse DeferredPreauthorizationCancelUrl(string transReference, string amount, string currency, string idUser, string tokenUser, string lang = "ES", string description = null, string secure3D = "0")
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.DeferredPreauthorizationCancelUrl(transReference, amount, currency, idUser, tokenUser, lang, description, secure3D);
             return servResponse;
         }
 
         /// <summary>
-        /// Executes a payment for web service with the "payment by reference" for the migration to PayTpv
+        /// Executes a payment for web service with the "payment by reference" for the migration to PayComet
         /// </summary>
         /// <param name="amount">Amount of payment 1 € = 100</param>
         /// <param name="transReference">transReference unique identifier payment</param>
@@ -619,7 +619,7 @@ namespace ApiPayTPV_Csharp.Controllers
         [Route("ExecutePurchaseRToken")]
         public BankstoreServResponse ExecutePurchaseRToken(string amount, string transReference, string rToken, string currency, string productDescription = null)
         {
-            Paytpv_Bankstore serviceAPI = new Paytpv_Bankstore(merchantCode, terminal, password, ipAddress);
+            Paycomet_Bankstore serviceAPI = new Paycomet_Bankstore(merchantCode, terminal, password, ipAddress);
             var servResponse = serviceAPI.ExecutePurchaseRToken(amount, transReference, rToken, currency, productDescription);
             return servResponse;
         }
