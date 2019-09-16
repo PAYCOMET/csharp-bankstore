@@ -25,6 +25,8 @@ namespace Api.PayCOMETService
 
         public Paycomet_Bankstore(string merchantCode, string terminal, string password, string ipAddr, string jetId = null)
         {
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             this.merchantCode = merchantCode;
             this.terminal = terminal;
             this.password = password;
@@ -49,7 +51,7 @@ namespace Api.PayCOMETService
             expDate = regEx.Replace(expDate, string.Empty);
             cvv = regEx.Replace(cvv, string.Empty);
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + pan + cvv + terminal + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + pan + cvv + terminal + password);
             var ip = ipAddress;
             try
             {
@@ -78,9 +80,9 @@ namespace Api.PayCOMETService
                 result.DsErrorId = "1011";
                 result.Result = "KO";
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                result.DsErrorId = "1002";
+                result.DsErrorId = e.Message; ;
                 result.Result = "KO";
             }
             return result;
