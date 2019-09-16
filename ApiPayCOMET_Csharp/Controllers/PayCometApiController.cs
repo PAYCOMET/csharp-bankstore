@@ -8,7 +8,7 @@ namespace ApiPayCOMET_Csharp.Controllers
     /// <summary>
     /// PayTVP Api
     /// </summary>
-    [RoutePrefix("api/PayTVP")]
+    [RoutePrefix("Api/PAYCOMET")]
     public class PayCOMETApiController : ApiController
     {
         private string merchantCode = ConfigurationManager.AppSettings["MerchantCodeTest"];

@@ -483,7 +483,7 @@
         </member>
         <member name="T:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController">
             <summary>
-            PayTVP Api
+            PAYCOMET Api
             </summary>
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.GetUserInfo(System.String,System.String)">
@@ -496,7 +496,7 @@
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.AddUser(System.String,System.String,System.String)">
             <summary>
-            Add a card to PayCOMET.  IMPORTANTES !!! This direct input must be activated by PayCOMET.
+            Add a card to PAYCOMET.  IMPORTANTES !!! This direct input must be activated by PAYCOMET.
             In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
             </summary>
             <param name="pan">card number without spaces or dashes</param>
@@ -506,18 +506,18 @@
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.RemoveUser(System.String,System.String)">
             <summary>
-            Removes a user through call soap PayCOMET
+            Removes a user through call soap PAYCOMET
             </summary>
-            <param name="idPayUser">user ID PayCOMET</param>
-            <param name="tokenPayUser">User Token PayCOMET</param>
+            <param name="idPayUser">user ID PAYCOMET</param>
+            <param name="tokenPayUser">User Token PAYCOMET</param>
             <returns>Object A transaction response</returns>
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.ExecutePurchase(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Execute a web service payment
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">unique identifier payment</param>
             <param name="currency">currency identifier transaction currency</param>
@@ -531,8 +531,8 @@
             <summary>
             Execute a web service payment with DCC operational
             </summary>
-            <param name="idPayUser">idPayUser User ID in PayCOMET</param>
-            <param name="tokenPayUser">tokenPayUser user Token in PayCOMET</param>
+            <param name="idPayUser">idPayUser User ID in PAYCOMET</param>
+            <param name="tokenPayUser">tokenPayUser user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">transReference unique identifier payment</param>
             <param name="productDescription">Product Description Product Description</param>
@@ -545,7 +545,7 @@
             Confirm a payment by web service with DCC operational
             </summary>
             <param name="transReference">transReference unique identifier payment</param>
-            <param name="dccCurrency">dccCurrency chosen currency transaction. It may be the product of PayCOMET native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
+            <param name="dccCurrency">dccCurrency chosen currency transaction. It may be the product of PAYCOMET native or selected by the end user. The amount will be sent in execute_purchase_dcc if the same product and become if different.</param>
             <param name="dccSession">dccSession sent in the same session execute_purchase_dcc process.</param>
             <returns>transaction response</returns>
             
@@ -554,8 +554,8 @@
             <summary>
             Executes a return of a payment web service
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="transReference">transReference unique identifier payment</param>
             <param name="currency">currency identifier transaction currency</param>
             <param name="authCode">AuthCode de la operación original a devolver</param>
@@ -565,7 +565,7 @@
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.CreateSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            Create a subscription in PayCOMET on a card.  IMPORTANTES !!! This direct input must be activated by PayCOMET.
+            Create a subscription in PAYCOMET on a card.  IMPORTANTES !!! This direct input must be activated by PAYCOMET.
             In default input method card for PCI-DSS compliance should be CreateSubscriptionUrl or CreateSubscriptionToken
             </summary>
             <param name="pan">card number without spaces or dashes</param>
@@ -583,10 +583,10 @@
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.EditSubscription(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            Modifies a subscription PayCOMET on a card.
+            Modifies a subscription PAYCOMET on a card.
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
             <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
             <param name="periodicity">periodicity Frequency of subscription. In days.</param>
@@ -597,19 +597,19 @@
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.RemoveSubscription(System.String,System.String)">
             <summary>
-            Deletes a subscription PayCOMET on a card.
+            Deletes a subscription PAYCOMET on a card.
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <returns>transaction response</returns>
             
         </member>
         <member name="M:ApiPayCOMET_Csharp.Controllers.PayCOMETApiController.CreateSubscriptionToken(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
-            Create a subscription in PayCOMET on a previously tokenized card.
+            Create a subscription in PAYCOMET on a previously tokenized card.
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="startDate">startDate date subscription start yyyy-mm-dd</param>
             <param name="endDate">endDate Date End subscription yyyy-mm-dd</param>
             <param name="transReference">transReference unique identifier payment</param>
@@ -624,8 +624,8 @@
             <summary>
             Create a pre-authorization by web service
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">transReference unique identifier payment</param>
             <param name="currency">currency identifier transaction currency</param>
@@ -639,8 +639,8 @@
             <summary>
             Confirm a pre-authorization previously sent by web service
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
@@ -650,8 +650,8 @@
             <summary>
             Cancels a pre-authorization previously sent by web service
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
@@ -661,8 +661,8 @@
             <summary>
             Confirm deferred preauthorization by web service. Once and authorized an operation deferred pre-authorization can be confirmed for the effective recovery within 72 hours; after that date, deferred pre-authorizations lose their validity.
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
@@ -672,8 +672,8 @@
             <summary>
             Cancels a deferred preauthorization by web service.
             </summary>
-            <param name="idPayUser">User ID in PayCOMET</param>
-            <param name="tokenPayUser">user Token in PayCOMET</param>
+            <param name="idPayUser">User ID in PAYCOMET</param>
+            <param name="tokenPayUser">user Token in PAYCOMET</param>
             <param name="amount">Amount of payment 1 € = 100</param>
             <param name="transReference">transReference unique identifier payment</param>
             <returns>transaction response</returns>
@@ -683,7 +683,7 @@
             <summary>
             Add a user by using web service BankStore JET
             </summary>
-            <param name="jetToken">jetToken temporary user Token in PayCOMET</param>
+            <param name="jetToken">jetToken temporary user Token in PAYCOMET</param>
             <returns>transaction response</returns>
             
         </member>

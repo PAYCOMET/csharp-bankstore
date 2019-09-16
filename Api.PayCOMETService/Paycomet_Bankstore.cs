@@ -25,6 +25,7 @@ namespace Api.PayCOMETService
 
         public Paycomet_Bankstore(string merchantCode, string terminal, string password, string ipAddr, string jetId = null)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             this.merchantCode = merchantCode;
             this.terminal = terminal;
             this.password = password;
@@ -49,7 +50,7 @@ namespace Api.PayCOMETService
             expDate = regEx.Replace(expDate, string.Empty);
             cvv = regEx.Replace(cvv, string.Empty);
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + pan + cvv + terminal + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + pan + cvv + terminal + password);
             var ip = ipAddress;
             try
             {
@@ -78,9 +79,9 @@ namespace Api.PayCOMETService
                 result.DsErrorId = "1011";
                 result.Result = "KO";
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                result.DsErrorId = "1002";
+                result.DsErrorId = e.Message;
                 result.Result = "KO";
             }
             return result;
@@ -99,7 +100,7 @@ namespace Api.PayCOMETService
             idPayUser = regEx.Replace(idPayUser, string.Empty);
             tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
             var ip = ipAddress;
 
             try
@@ -150,7 +151,7 @@ namespace Api.PayCOMETService
             BankstoreServResponse result = new BankstoreServResponse();
             idPayUser = regEx.Replace(idPayUser, string.Empty);
             tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
             var ip = ipAddress;
 
             try
@@ -200,7 +201,7 @@ namespace Api.PayCOMETService
             BankstoreServResponse result = new BankstoreServResponse();
             idPayUser = regEx.Replace(idPayUser, string.Empty);
             tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + transReference + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + transReference + password);
             var ip = ipAddress;
 
             try
@@ -256,7 +257,7 @@ namespace Api.PayCOMETService
             BankstoreServResponse result = new BankstoreServResponse();
             idPayUser = regEx.Replace(idPayUser, string.Empty);
             tokenPayUser = regEx.Replace(tokenPayUser, string.Empty);
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + transReference + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + transReference + password);
             var ip = ipAddress;
 
             try
@@ -314,7 +315,7 @@ namespace Api.PayCOMETService
         public BankstoreServResponse ConfirmPurchaseDcc(string transReference, string dccCurrency, string dccSession)
         {
             BankstoreServResponse result = new BankstoreServResponse();
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + terminal + transReference + dccCurrency + dccSession + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + terminal + transReference + dccCurrency + dccSession + password);
             var ip = ipAddress;
 
             try
@@ -369,7 +370,7 @@ namespace Api.PayCOMETService
         public BankstoreServResponse ExecuteRefund(string idPayUser, string tokenPayUser, string transReference, string currency, string authCode, string amount = null)
         {
             BankstoreServResponse result = new BankstoreServResponse();
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + authCode + transReference + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + authCode + transReference + password);
             var ip = ipAddress;
 
             try
@@ -428,7 +429,7 @@ namespace Api.PayCOMETService
             expDate = regEx.Replace(expDate, string.Empty);
             cvv = regEx.Replace(cvv, string.Empty);
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + pan + cvv + terminal + amount + currency + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + pan + cvv + terminal + amount + currency + password);
             var ip = ipAddress;
 
             try
@@ -490,7 +491,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount + password);
             var ip = ipAddress;
 
             try
@@ -544,7 +545,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + password);
             var ip = ipAddress;
 
             try
@@ -595,7 +596,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount
                 + currency + password);
             var ip = ipAddress;
 
@@ -658,7 +659,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + amount
                 + transReference + password);
             var ip = ipAddress;
 
@@ -716,7 +717,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal
                 + transReference + amount + password);
             var ip = ipAddress;
 
@@ -773,7 +774,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
                 + amount + password);
             var ip = ipAddress;
 
@@ -828,7 +829,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
                 + amount + password);
             var ip = ipAddress;
 
@@ -884,7 +885,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + idPayUser + tokenPayUser + terminal + transReference
                 + amount + password);
             var ip = ipAddress;
 
@@ -937,7 +938,7 @@ namespace Api.PayCOMETService
         {
             BankstoreServResponse result = new BankstoreServResponse();
 
-            var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + jetToken + jetId + terminal + password);
+            var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + jetToken + jetId + terminal + password);
             var ip = ipAddress;
 
             try
@@ -990,7 +991,7 @@ namespace Api.PayCOMETService
 
             try
             {
-                var signature = Cryptography.SHA1HashStringForUTF8String(merchantCode + terminal + amount + transReference + rToken + password);
+                var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + terminal + amount + transReference + rToken + password);
                 var ip = ipAddress;
 
                 PAYCOMET_BankStoreGatewayPortClient wsProxy = new PAYCOMET_BankStoreGatewayPortClient();
