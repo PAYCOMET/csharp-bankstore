@@ -6,9 +6,9 @@ using Api.PayCOMETService.Responses;
 namespace ApiPayCOMET_Csharp.Controllers
 {
     /// <summary>
-    /// PayTVP Api
+    /// PAYCOMET Api
     /// </summary>
-    [RoutePrefix("api/PayTVP")]
+    [RoutePrefix("api/PAYCOMET")]
     public class PayCOMETApiController : ApiController
     {
         private string merchantCode = ConfigurationManager.AppSettings["MerchantCodeTest"];
