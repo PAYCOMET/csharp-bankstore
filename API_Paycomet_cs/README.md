@@ -1,5 +1,4 @@
-API de PAYCOMET BankStore en ASP.NET y C#
-=====================
+﻿### API de PAYCOMET BankStore en ASP NET y C#
 
 Este es el API de conexión con todos los servicios de PAYCOMET BankStore mediante XML, IFRAME, FULLSCREEN y JET.
 
@@ -90,7 +89,7 @@ Dillinger is currently extended with the following plugins. Instructions on how 
 Enlace a la documentación: `https://docs.paycomet.com/es/documentacion/introduccion`
 
 ### Soporte
-Si tienes alguna duda o pregunta no tienes más que escribirnos un email a [tecnico@paycomet.com]
+Si tienes alguna duda o pregunta no tienes más que escribirnos un email a sing [tecnico@paycomet.com](mailto:[tecnico@paycomet.com])
 
 License
 ----
