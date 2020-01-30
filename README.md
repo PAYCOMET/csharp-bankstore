@@ -36,6 +36,7 @@ Paycomet_Bankstore bs = new Paycomet_Bankstore(MerchantCode, Terminal, Password,
 ```
 
 También tendrás que añadir los datos de tu tarjeta para que pueda ser tokenizada, los datos son los siguientes:
+
 [Tarjetas de prueba: `https://docs.paycomet.com/es/cards/testcards`]
 ```sh
 pan => Corresponde al número de la tarjeta
