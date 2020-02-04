@@ -50,7 +50,9 @@ BankstoreServResponse add_user = bs.AddUser(pan, expDate, cvv, ipClient);
 ```
 
 ## 2 - Aplicación "Web_Client_cs"
-Debes modificar las variables de configuración dentro del archivo **Web.config**,  con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
+Es posible que tengas que actualizar los paquetes NuGet del proyecto si al ejecutar el mismo recibes algún tipo de error, en caso contrario omite este punto.
+
+Para poder realizar uso, debes modificar las variables de configuración dentro del archivo **Web.config**,  con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
 ```sh
 MerchantCode => Corresponde al Código de cliente
 Terminal => Correpsonde al Número de terminal
