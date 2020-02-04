@@ -1,0 +1,94 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+input {
+    border: 0px;
+    width: 100%;
+    color: rgb(73, 80, 87);
+    height: 31px;
+    font-size: 16px;
+    padding-left: 7px;
+}
+
+.card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+.card-body {
+    padding: 3rem !important;
+}
+
+.p5 {
+    padding: 3rem !important;
+}
+.paycomet_merchant_pan {
+    background-image: url(/Content/images/images.png), url(/Content/images/images.png);
+    background-position: 2px -122px,260px -60px;
+    background-size: 120px 882px,120px 882px;
+    background-repeat: no-repeat;
+    padding-left: 54px !important;
+    width: 100%;
+    border-radius: 4px!important;
+}
+
+.btn-text-size{
+    font-size: 20px!important;
+}
+
+.title-box {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.text-box {
+    font-size: 15px;
+    font-family: cursive;
+    font-weight: bold;
+}
+
+.txt-20 {
+    font-size: 20px!important;
+}
+
+.error-notify {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}

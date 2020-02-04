@@ -993,8 +993,9 @@ namespace API_Paycomet_cs.Models
         /// </summary>
         /// <param name="jetToken">jetToken temporary user Token in PayCOMET</param>
         /// <param name="ipClient">ip of the client performing the operation</param>
+        /// <param name="jetId">jetId in configuration PayCOMET</param>
         /// <returns>transaction response</returns>
-        public BankstoreServResponse AddUserToken(string jetToken, string ipClient)
+        public BankstoreServResponse AddUserToken(string jetToken, string ipClient, string jetId)
         {
             BankstoreServResponse result = new BankstoreServResponse();
 

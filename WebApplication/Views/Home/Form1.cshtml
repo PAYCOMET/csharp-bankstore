@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Ejemplo JetIframe";
+}
+
+<div class="container">
+    <div class="row">
+        <aside class="col-sm-9">
+            <br/><h2>Ejemplo de integración Jet Iframe</h2><br/>
+            <div class="card card-body p-5">
+                <hr>
+                <form role="form" id="paycometPaymentForm" action="ExecutePurchaseToken" method="POST" style="@Html.Raw((string)@ViewBag.display)">
+                    <input type="hidden" name="amount" value="@ViewBag.amount">
+                    <input type="hidden" name="jetID" data-paycomet="jetID" value="@ViewBag.jetid">
+                    <div class="form-group">
+                        <label for="username">Titular de la tarjeta</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name="username" data-paycomet="cardHolderName" placeholder="Titular de la tarjeta" required="">
+                        </div> <!-- input-group.// -->
+                    </div> <!-- form-group.// -->
+
+
+                    <div class="form-group" style="width:67%">
+                        <label for="username">Numero de tarjeta</label>
+                        <div class="input-group">
+                            <div id="paycomet-pan" class="form-control" style="padding:0px; height:36px;"></div>
+                            <input paycomet-style="width: 100%; height: 21px; font-size:14px; padding-left:7px; padding-top:8px; border:0px;" paycomet-name="pan">
+                        </div>
+                        <img src="~/Content/images/payment.png" alt="payments" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label><span class="hidden-xs">Fecha de Expiración</span> </label>
+                                <div class="form-inline">
+                                    <select class="form-control" style="width:45%" name="dateMonth" data-paycomet="dateMonth">
+                                        <option>Mes</option>
+                                        <option value="01">01 - Enero</option>
+                                        <option value="02">02 - Febrero</option>
+                                        <option value="03">03 - Marzo</option>
+                                        <option value="04">04 - Abril</option>
+                                        <option value="05">05 - Mayo</option>
+                                        <option value="06">06 - Junio</option>
+                                        <option value="07">07 - Julio</option>
+                                        <option value="08">08 - Agosto</option>
+                                        <option value="09">09 - Septiembre</option>
+                                        <option value="10">10 - Octubre</option>
+                                        <option value="11">11 - Noviembre</option>
+                                        <option value="12">12 - Diciembre</option>
+                                    </select>
+                                    <span style="width: 10%; text-align: center"> / </span>
+                                    <select class="form-control" style="width:45%" name="dateYear" data-paycomet="dateYear">
+                                        <option>Año</option>
+                                        <option value="20">2020</option>
+                                        <option value="21">2021</option>
+                                        <option value="22">2022</option>
+                                        <option value="23">2023</option>
+                                        <option value="24">2024</option>
+                                        <option value="25">2025</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label data-toggle="tooltip" title=""
+                                       data-original-title="3 digits code on back side of the card">
+                                    CVV <i class="fa fa-question-circle"></i>
+                                </label>
+                                <div id="paycomet-cvc2" class="form-control" style="height: 36px; padding:0px;"></div>
+                                <input paycomet-name="cvc2" paycomet-style="border:0px; width: 100%; height: 21px; font-size:12px; padding-left:7px; padding-tap:8px;" class="form-control" required="" type="text">
+                            </div> <!-- form-group.// -->
+                        </div>
+                    </div> <!-- row.// -->
+                    <hr>
+                    <button class="subscribe btn btn-primary btn-block" type="submit"> Confirmar </button>
+                </form><br/>
+                <div id="paymentErrorMsg" class="txt-20 error-notify">
+                   
+                </div>
+                <div> @Html.Raw((string)@ViewBag.respuesta) </div>
+            </div> <!-- card-body.// -->
+        </aside>
+    </div><!-- row.// -->
+
+</div>
+<script src="https://api.paycomet.com/gateway/paycomet.jetiframe.js?lang=es"></script>

@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br/>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-sm-6 mb-3 mb-md-0">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="title-box">Ejemplo de formulario 1</h4>
+                    <p class="text-box">Integración de formulario JET-IFRAME para cualquier comercio</p>
+                    <div class="alert alert-success" role="alert">
+                        La integración de este tipo de formularios procesa los datos de las tarjetas del cliente bajo los <strong>servidores seguros de PAYCOMET</strong>.
+                    </div>
+                    <a href="@Url.Action("Form1", "Home")" class="btn btn-primary txt-20">JET-IFRAME</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="title-box">Ejemplo formulario 2</h4>
+                    <p class="text-box">Integración de formulario para comercio PCI DSS</p>
+                    <div class="alert alert-danger" role="alert">
+                        La integración de este tipo de formularios procesa los datos de las tarjetas del cliente bajo tu servidor.
+                    </div>
+                    <a href="@Url.Action("Form2", "Home")" class="btn btn-primary txt-20">FORMULARIO (PCI DSS)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
