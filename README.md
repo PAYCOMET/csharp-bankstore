@@ -9,15 +9,14 @@ Descarga el proyecto con la solución **API_Paycomet_cs**
 
 Dentro de la misma encontrarás:
 
- - **API_Paycomet_cs**: La API con los servicios Paycomet
- - **Desktop_Client_cs**: La aplicacion cliente de escritorio, que contiene ejemplos de uso con llamadas a la API 
+ - **API_Paycomet_cs**: La aplicación API
+ - **Desktop_Client_cs**: La aplicacion cliente de escritorio, que contiene ejemplos de uso con llamadas a la aplicación API 
 
 ### Aplicación "API_Paycomet_cs"
 No es necesario alterar su funcionamiento.
 
 ### Aplicación "Desktop_Client_cs"
 Podrá utilizar cualquier tipo de aplicación con lenguaje C#, esto es solo un ejemplo de integración con una aplicación de consola.
-Para realizar pruebas, establece este proyecto como "Proyecto de inicio" haciendo click derecho sobre el mismo y seleccionado la opción antes de ejecutar la solución.
 
 Dentro de esta aplicación se encuentra el archivo **Program.cs**, tendrás que configurar las variables con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
 ```sh
@@ -36,8 +35,6 @@ Paycomet_Bankstore bs = new Paycomet_Bankstore(MerchantCode, Terminal, Password,
 ```
 
 También tendrás que añadir los datos de tu tarjeta para que pueda ser tokenizada, los datos son los siguientes:
-
-[Tarjetas de prueba: `https://docs.paycomet.com/es/cards/testcards`]
 ```sh
 pan => Corresponde al número de la tarjeta
 expDate = Correponde a la fecha de caducidad de la tarjeta
@@ -52,6 +49,8 @@ BankstoreServResponse add_user = bs.AddUser(pan, expDate, cvv, ipClient);
 
 
 ### Integración de métodos API_Paycomet_cs
+
+Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
 
 | Método | Descripción |
 | ------ | ------ |

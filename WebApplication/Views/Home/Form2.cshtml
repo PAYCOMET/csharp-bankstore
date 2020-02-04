@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        <aside class="col-sm-9">
+            <p><h2>Ejemplo de Formulario para un comercio PCI DSS (*)</h2></p>
+            <div class="alert alert-warning text-justify">
+                (*) <strong>PCI DSS:</strong> Las compañías que procesan, guardan o transmiten datos de tarjetas deben cumplir con el estándar o arriesgan la pérdida de sus permisos para procesar las tarjetas de crédito y débito (Perdida de franquicias), enfrentar auditorías rigurosas o pagos de multas.​ Los Comerciantes y proveedores de servicios de tarjetas de crédito y débito, deben validar su cumplimiento al estándar en forma periódica.
+                <br /><br />
+                Esta validación es realizada por auditores autorizados Qualified Security Assessor (QSAs). Sólo a las compañías que procesan menos de 80,000 transacciones por año se les permite realizar una autoevaluación utilizando un cuestionario provisto por el Consorcio del PCI (PCI SSC).
+            </div>
+            <div class="alert alert-info" role="alert text-justify">
+                Desde el Departamento de Compliance de PAYCOMET, necesitamos que tenga al día la información de obligado cumplimiento para el protocolo del SEPBLAC que se le pide en el panel de cliente de PAYCOMET. Esto es uno de los pasos importantes que ha de tener para pasar a ser PCI.
+            </div>
+            <div class="card card-body p-5">
+                <hr>
+                <form role="form" id="paycometPaymentForm" action="ExecutePurchase" method="POST" style="@Html.Raw((string)@ViewBag.display)">
+                    <input type="hidden" name="amount" value="@ViewBag.amount">
+                    <input type="hidden" name="jetID" data-paycomet="jetID" value="@ViewBag.jetid">
+                    <div class="form-group">
+                        <label for="username">Titular de la tarjeta</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name="username" data-paycomet="cardHolderName" placeholder="Titular de la tarjeta" required="required">
+                        </div> <!-- input-group.// -->
+                    </div> <!-- form-group.// -->
+
+
+                    <div class="form-group" style="width:67%">
+                        <label for="username">Numero de tarjeta</label>
+                        <div class="input-group">
+                            @*<div id="paycomet-pan" style="padding:1px;" class="form-control"></div>*@
+                            <input type="text" class="form-control paycomet_merchant_pan" name="pan" paycomet-name="pan" placeholder="4539232076648253" required="required">
+                        </div>
+                        <img src="~/Content/images/payment.png" alt="payments" />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label><span class="hidden-xs">Fecha de Expiración</span> </label>
+                                <div class="form-inline">
+                                    <select class="form-control" style="width:45%" name="dateMonth" data-paycomet="dateMonth">
+                                        <option>Mes</option>
+                                        <option value="01">01 - Enero</option>
+                                        <option value="02">02 - Febrero</option>
+                                        <option value="03">03 - Marzo</option>
+                                        <option value="04">04 - Abril</option>
+                                        <option value="05">05 - Mayo</option>
+                                        <option value="06">06 - Junio</option>
+                                        <option value="07">07 - Julio</option>
+                                        <option value="08">08 - Agosto</option>
+                                        <option value="09">09 - Septiembre</option>
+                                        <option value="10">10 - Octubre</option>
+                                        <option value="11">11 - Noviembre</option>
+                                        <option value="12">12 - Diciembre</option>
+                                    </select>
+                                    <span style="width:10%; text-align: center"> / </span>
+                                    <select class="form-control" style="width:45%" name="dateYear" data-paycomet="dateYear">
+                                        <option>Año</option>
+                                        <option value="20">2020</option>
+                                        <option value="21">2021</option>
+                                        <option value="22">2022</option>
+                                        <option value="23">2023</option>
+                                        <option value="24">2024</option>
+                                        <option value="25">2025</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label data-toggle="tooltip" title="" data-original-title="Los tres últimos dígitos de la parte trasera de la tarjeta">
+                                    CVV
+                                    <i class="fa fa-question-circle"></i>
+                                </label>
+                                @*<div id="paycomet-cvc2" style="padding:1px;" class="form-control"></div>*@
+                                <input paycomet-name="cvc2" name="cvc2" class="form-control" required="required" placeholder="123" type="text">
+                            </div> <!-- form-group.// -->
+                        </div>
+                    </div> <!-- row.// -->
+                    <hr>
+                    <button class="subscribe btn btn-primary btn-block" type="submit"> Confirmar </button>
+                </form><br />
+                <div id="paymentErrorMsg" class="txt-20 error-notify">
+
+                </div>
+                <div> @Html.Raw((string)@ViewBag.respuesta) </div>
+            </div> <!-- card-body.// -->
+        </aside>
+    </div><!-- row.// -->
+
+</div>

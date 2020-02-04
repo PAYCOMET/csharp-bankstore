@@ -8,14 +8,17 @@ Descarga el proyecto con la solución **API_Paycomet_cs**
 
 Dentro de la misma encontrarás:
 
- - **API_Paycomet_cs**: La aplicación API
- - **Desktop_Client_cs**: La aplicacion cliente de escritorio, que contiene ejemplos de uso con llamadas a la aplicación API 
+ - **API_Paycomet_cs**:  API con los servicios Paycomet Bankstore
+ - **1 - Desktop_Client_cs**: La aplicacion cliente de escritorio, que contiene ejemplos de uso con llamadas a API (API_Paycomet_cs)
+ - **2-Web_Client_cs**: La aplicacion web, que contiene dos ejemplos de compras: usuarios corrientes (se puede aplicar para ambos casos) o usuarios PCI DSS.
+
+Para realizar pruebas con cualquira de las aplicaciones, **Desktop_Client_cs** o **Web_Client_cs** , no te olvides de establecer ese proyecto como *"Proyecto de inicio"** haciendo click derecho sobre el mismo y seleccionado la opción antes de ejecutar la solución.
 
 ### Aplicación "API_Paycomet_cs"
-No es necesario alterar su funcionamiento.
+No es necesario alterar su funcionamiento. El listado de **métodos**(*) disponibles se encuentra al final del documento.
 
-### Aplicación "Desktop_Client_cs"
-Podrá utilizar cualquier tipo de aplicación con lenguaje C#, esto es solo un ejemplo de integración con una aplicación de consola.
+## 1 - Aplicación "Desktop_Client_cs"
+Esto es solo un ejemplo de integración con una aplicación de consola.
 
 Dentro de esta aplicación se encuentra el archivo **Program.cs**, tendrás que configurar las variables con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
 ```sh
@@ -46,10 +49,24 @@ De esta forma, ya podremos hacer llamadas a los métodos de la API, como por eje
 BankstoreServResponse add_user = bs.AddUser(pan, expDate, cvv, ipClient);
 ```
 
+## 2 - Aplicación "Web_Client_cs"
+Debes modificar las variables de configuración dentro del archivo **Web.config**,  con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
+```sh
+MerchantCode => Corresponde al Código de cliente
+Terminal => Correpsonde al Número de terminal
+Password => Corresponde a la Contraseña
+JetId => Se genera dando al botón que aparece al lado del mismo, dentro del panel de administración de tu roducto, y se obtiene una cadena alfanumérica
+endpoint => "https://api.paycomet.com/gateway/xml-bankstore?wsdl"
+endpointUrl => "https://api.paycomet.com/gateway/ifr-bankstore?"
+```
 
-### Integración de métodos API_Paycomet_cs
+El proyecto dispone de un Controlador: **HomeController** y tres vistas: **Home, Form1, Form2**. Al iniciar el proyecto podemos probar dos integraciones, siendo **recomendada la primera**, JET-IFRAME o Formulario PCI DSS.
 
-Dillinger is currently extended with the following plugins. Instructions on how to use them in your own application are linked below.
+**La integración de JET-IFRAME la podrá realizar cualquier usuario**, pero la integración de Formulario PCI DSS solo aquellos que dispongan de autorización para el tratamiento de datos de tarjeta en sus servidores. 
+Tenga en cuenta que con la integración de JET-IFRAME todos los datos se procesan en los **servidores seguros** de PAYCOMET y no tiene que preocuparse de realizar más que las llamadas.
+
+
+## (*) Integración de métodos API_Paycomet_cs
 
 | Método | Descripción |
 | ------ | ------ |
@@ -89,7 +106,7 @@ Dillinger is currently extended with the following plugins. Instructions on how 
 Enlace a la documentación: `https://docs.paycomet.com/es/documentacion/introduccion`
 
 ### Soporte
-Si tienes alguna duda o pregunta no tienes más que escribirnos un email a sing [tecnico@paycomet.com](mailto:[tecnico@paycomet.com])
+Si tienes alguna duda o pregunta puedes escribirnos un email a [tecnico@paycomet.com]
 
 License
 ----
