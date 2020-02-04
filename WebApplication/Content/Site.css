@@ -70,14 +70,12 @@ input {
 }
 
 .title-box {
-    font-family: monospace;
     font-weight: bold;
     font-size: 20px;
 }
 
 .text-box {
     font-size: 15px;
-    font-family: cursive;
     font-weight: bold;
 }
 
