@@ -8,7 +8,7 @@ Descarga el proyecto con la solución **API_Paycomet_cs**
 
 Dentro de la misma encontrarás:
 
- - **API_Paycomet_cs**:  API con los servicios Paycomet Bankstore
+ - **API_Paycomet_cs**:  API con los servicios Paycomet de las integraciones Bankstore XML - IFRAME - JET IFRAME
  - **1 - Desktop_Client_cs**: La aplicacion cliente de escritorio, que contiene ejemplos de uso con llamadas a API (API_Paycomet_cs)
  - **2-Web_Client_cs**: La aplicacion web, que contiene dos ejemplos de compras: usuarios corrientes (se puede aplicar para ambos casos) o usuarios PCI DSS.
 
@@ -50,7 +50,9 @@ BankstoreServResponse add_user = bs.AddUser(pan, expDate, cvv, ipClient);
 ```
 
 ## 2 - Aplicación "Web_Client_cs"
-Debes modificar las variables de configuración dentro del archivo **Web.config**,  con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
+Es posible que tengas que actualizar los paquetes NuGet del proyecto si al ejecutar el mismo recibes algún tipo de error, en caso contrario omite este punto.
+
+Para poder realizar uso, debes modificar las variables de configuración dentro del archivo **Web.config**,  con los datos de tu termial obtenidos en `https://dashboard.paycomet.com/cp_control/index.php` en el menú **Mis Productos -> Configurar productos -> Editar**
 ```sh
 MerchantCode => Corresponde al Código de cliente
 Terminal => Correpsonde al Número de terminal
@@ -60,46 +62,48 @@ endpoint => "https://api.paycomet.com/gateway/xml-bankstore?wsdl"
 endpointUrl => "https://api.paycomet.com/gateway/ifr-bankstore?"
 ```
 
-El proyecto dispone de un Controlador: **HomeController** y tres vistas: **Home, Form1, Form2**. Al iniciar el proyecto podemos probar dos integraciones, siendo **recomendada la primera**, JET-IFRAME o Formulario PCI DSS.
+El proyecto dispone de un Controlador: **HomeController** y tres vistas: **Home, Form1, Form2**. Estas dos últimas son ejemplos de implementación de un proceso de compra.
 
-**La integración de JET-IFRAME la podrá realizar cualquier usuario**, pero la integración de Formulario PCI DSS solo aquellos que dispongan de autorización para el tratamiento de datos de tarjeta en sus servidores. 
-Tenga en cuenta que con la integración de JET-IFRAME todos los datos se procesan en los **servidores seguros** de PAYCOMET y no tiene que preocuparse de realizar más que las llamadas.
+* Implementación **Form1**, realizada usando JET-IFRAME  'https://docs.paycomet.com/es/documentacion/bankstore_jetiframe'
+* Implementación **Form2**, usando el método de la clase API_Paycomet_cs ExecutePurchase
+
+**La integración de JET-IFRAME es la recomendada** ya que la podrá realizar cualquier comercio, en esta integración todos los datos de tarjeta se procesan en los **servidores seguros** de PAYCOMET y no tiene que preocuparse de realizar más que las llamadas.
 
 
 ## (*) Integración de métodos API_Paycomet_cs
 
-| Método | Descripción |
-| ------ | ------ |
-| AddUser | Ejecución de alta de usuario en el sistema |
-| InfoUser | Información del usuario |
-| RemoveUser | Eliminación del usuario |
-| ExecutePurchase | Ejecución de cobro a Usuario en el sistema |
-| ExecutePurchaseDcc | Ejecución de cobro a Usuario en el sistema por DCC |
-| ConfirmPurchaseDcc | Confirmación de moneda en pago DCC |
-| ExecuteRefund | Devolución de cobro a usuario en el sistema |
-| CreateSubscription | Ejecución de alta de suscripción en el sistema |
-| EditSubscription | Modificación de suscripción en el sistema|
-| RemoveSubscription | Eliminación de Suscripción |
-| CreateSubscriptionToken | Ejecución de alta de suscripción en el sistema con USERID Y TOKENID |
-| CreatePreauthorization | Creación de una preautorización a usuario en el sistema |
-| PreauthorizationConfirm | Confirmación de una preautorización a usuario en el sistema |
-| PreauthorizationCancel | Cancelación de una preautorización a usuario en el sistema |
-| DeferredPreauthorizationConfirm | Confirmación de una preautorización diferida a usuario en el sistema |
-| DeferredPreauthorizationCancel | Cancelación de una preautorización diferida a usuario en el sistema |
-| AddUserToken | Ejecución de alta de usuario en el sistema mediante Token |
-| ExecutePurchaseRToken | Ejecución de Cobro a un usuario por Referencia |
-| AddUserUrl | Devuelve la url para iniciar una ejecuación de Alta de Usuario en el sistema |
-| ExecutePurchaseUrl | Devuelve la url para iniciar una ejecución de cobro en el sistema (Alta implícita de Usuario en el sistema) |
-| CreateSubscriptionUrl | Devuelve la url para iniciar un de alta de suscripción en el sistema (Alta implícita de Usuario en el sistema)|
-| ExecutePurchaseTokenUrl | Devuelve la url para iniciar una ejecución de cobro existente|
-| CreateSubscriptionTokenUrl | Devuelve la url para iniciar una ejecución de Alta de Suscripción a un usuario existente |
-| CreatePreauthorizationUrl | Devuelve la url para iniciar una ejecución de Alta de Preautorización (Alta Implícita de Usuario en el sistema) |
-| PreauthorizationConfirmUrl | Devuelve la url para iniciar una ejecución de Confirmación de Preautorización |
-| PreauthorizationCancelUrl | Devuelve la url para iniciar una ejecución de Cancelación de Preautorización |
-| ExecutePreauthorizationTokenUrl | Devuelve la url para iniciar un alta de Preautorización a un usuario existente |
-| DeferredPreauthorizationUrl | Devuelve la url para iniciar una ejecución de alta de preautorización diferida (alta implícita de usuario en el sistema)|
-| DeferredPreauthorizationConfirmUrl | Devuelve la url para iniciar una ejecución de Confirmación de Preautorización Diferida |
-| DeferredPreauthorizationCancelUrl | Devuelve la url para iniciar una ejecución de Cancelación de Preautorización Diferida |
+| Método | Integración | Descripción |
+| ------ | ------ | ------ |
+| AddUser | BankStore XML | Ejecución de alta de usuario en el sistema |
+| InfoUser | BankStore XML | Información del usuario |
+| RemoveUser |  BankStore XML | Eliminación del usuario |
+| ExecutePurchase |  BankStore XML | Ejecución de cobro a Usuario en el sistema |
+| ExecutePurchaseDcc |  BankStore XML | Ejecución de cobro a Usuario en el sistema por DCC |
+| ConfirmPurchaseDcc |  BankStore XML | Confirmación de moneda en pago DCC |
+| ExecuteRefund |  BankStore XML | Devolución de cobro a usuario en el sistema |
+| CreateSubscription |  BankStore XML | Ejecución de alta de suscripción en el sistema |
+| EditSubscription |  BankStore XML | Modificación de suscripción en el sistema|
+| RemoveSubscription | BankStore XML | Eliminación de Suscripción |
+| CreateSubscriptionToken | BankStore XML |  Ejecución de alta de suscripción en el sistema con USERID Y TOKENID |
+| CreatePreauthorization |  BankStore XML | Creación de una preautorización a usuario en el sistema |
+| PreauthorizationConfirm |  BankStore XML | Confirmación de una preautorización a usuario en el sistema |
+| PreauthorizationCancel |  BankStore XML | Cancelación de una preautorización a usuario en el sistema |
+| DeferredPreauthorizationConfirm |  BankStore XML | Confirmación de una preautorización diferida a usuario en el sistema |
+| DeferredPreauthorizationCancel |  BankStore XML | Cancelación de una preautorización diferida a usuario en el sistema |
+| AddUserToken | BankStore XML |  Ejecución de alta de usuario en el sistema mediante Token |
+| ExecutePurchaseRToken |  BankStore XML | Ejecución de Cobro a un usuario por Referencia |
+| AddUserUrl | BankStore IFRAME/XML | Devuelve la url para iniciar una ejecuación de Alta de Usuario en el sistema |
+| ExecutePurchaseUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de cobro en el sistema (Alta implícita de Usuario en el sistema) |
+| CreateSubscriptionUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar un de alta de suscripción en el sistema (Alta implícita de Usuario en el sistema)|
+| ExecutePurchaseTokenUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de cobro existente|
+| CreateSubscriptionTokenUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Alta de Suscripción a un usuario existente |
+| CreatePreauthorizationUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Alta de Preautorización (Alta Implícita de Usuario en el sistema) |
+| PreauthorizationConfirmUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Confirmación de Preautorización |
+| PreauthorizationCancelUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Cancelación de Preautorización |
+| ExecutePreauthorizationTokenUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar un alta de Preautorización a un usuario existente |
+| DeferredPreauthorizationUrl |  BankStore IFRAME/XML | evuelve la url para iniciar una ejecución de alta de preautorización diferida (alta implícita de usuario en el sistema)|
+| DeferredPreauthorizationConfirmUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Confirmación de Preautorización Diferida |
+| DeferredPreauthorizationCancelUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Cancelación de Preautorización Diferida |
 
 ### Documentación
 
@@ -112,5 +116,3 @@ License
 ----
 
 Paycomet
-
-
