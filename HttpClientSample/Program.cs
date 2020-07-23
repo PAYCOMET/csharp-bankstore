@@ -77,7 +77,7 @@ namespace HttpClientSample
             //-------------------------------------------------------------------------------------------
             // Devuelve la URL para lanzar un execute_preauthorization_token bajo IFRAME / Fullscreen
             //-------------------------------------------------------------------------------------------
-            // BankstoreServResponse execute_preauthorization_token = bs.ExecutePreauthorizationTokenUrl( transReference, amount, currency, idUser, tokenUser, lang, description, secure3D, scoring );
+            // BankstoreServResponse execute_preauthorization_token = bs.CreatePreauthorizationTokenUrl( transReference, amount, currency, idUser, tokenUser, lang, description, secure3D, scoring );
 
             //-----------------------------------------------------------------------------------
             // Devuelve la URL para lanzar un deferred_preauthorization bajo IFRAME / Fullscreen
