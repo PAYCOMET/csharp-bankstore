@@ -1611,7 +1611,7 @@ namespace API_Paycomet_cs.Models
         /// <param name="description">description Operation description</param>
         /// <param name="secure3D">secure3D Force operation 0 = No 1 = Safe and secure by 3DSecure</param>
         /// <returns>transaction response</returns>
-        public BankstoreServResponse ExecutePreauthorizationTokenUrl(string IpClient, string transReference, string amount, string currency, string idUser,
+        public BankstoreServResponse CreatePreauthorizationTokenUrl(string IpClient, string transReference, string amount, string currency, string idUser,
             string tokenUser, string lang = "ES", string description = null, string secure3D = "0", string scoring = null)
         {
             BankstoreServResponse result = new BankstoreServResponse();
