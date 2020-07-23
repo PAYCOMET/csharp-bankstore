@@ -100,7 +100,7 @@ El proyecto dispone de un Controlador: **HomeController** y tres vistas: **Home,
 | CreatePreauthorizationUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Alta de Preautorización (Alta Implícita de Usuario en el sistema) |
 | PreauthorizationConfirmUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Confirmación de Preautorización |
 | PreauthorizationCancelUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Cancelación de Preautorización |
-| ExecutePreauthorizationTokenUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar un alta de Preautorización a un usuario existente |
+| CreatePreauthorizationTokenUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar un alta de Preautorización a un usuario existente |
 | DeferredPreauthorizationUrl |  BankStore IFRAME/XML | evuelve la url para iniciar una ejecución de alta de preautorización diferida (alta implícita de usuario en el sistema)|
 | DeferredPreauthorizationConfirmUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Confirmación de Preautorización Diferida |
 | DeferredPreauthorizationCancelUrl |  BankStore IFRAME/XML | Devuelve la url para iniciar una ejecución de Cancelación de Preautorización Diferida |
