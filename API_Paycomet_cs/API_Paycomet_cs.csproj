@@ -77,6 +77,9 @@
     <Compile Include="Utils\Cryptography.cs" />
     <Compile Include="Utils\OperationData.cs" />
     <Compile Include="Utils\OperationTypes.cs" />
+    <Compile Include="Web References\api.paycomet.com_2\Reference.cs">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References" />
@@ -93,6 +96,11 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>API_Paycomet_cs_api_paycomet_com_PAYTPV_BankStoreGatewayService</CachedSettingsPropName>
     </WebReferenceUrl>
+    <WebReferenceUrl Include="https://api.paycomet.com/gateway/xml-operations">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\api.paycomet.com_2</RelPath>
+      <UpdateFromURL>https://api.paycomet.com/gateway/xml-operations</UpdateFromURL>
+    </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">
@@ -106,6 +114,12 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="README.md" />
+    <None Include="Web References\api.paycomet.com_2\PAYTPV_OperationsGateway.wsdl" />
+    <None Include="Web References\api.paycomet.com_2\xml-operations.disco" />
+    <None Include="Web References\api.paycomet.com_2\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
