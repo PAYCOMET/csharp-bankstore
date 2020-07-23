@@ -4,7 +4,9 @@ using System.Web;
 using System.Text.RegularExpressions;
 using System.Net;
 using API_Paycomet_cs.api.paycomet.com;
+using API_Paycomet_cs.api.paycomet.com_2;
 using System.Security.Cryptography;
+using System.Globalization;
 
 namespace API_Paycomet_cs.Models
 {
@@ -29,6 +31,49 @@ namespace API_Paycomet_cs.Models
             this.endpointUrl = endpointUrl;
         }
 
+        private string operationAuthCode(string transReference, string currency, string operation)
+        {
+            string[] terminals = { terminal };
+            string[] operations = { operation };
+            DateTime dt = DateTime.Now;
+            string formatstart = "yyyyMMdd000000";
+            string formatend = "yyyyMMdd235959";
+            string datestart;
+            string dateend;
+            string result;
+
+            PAYTPV_OperationsGatewayService opWsProxy = new PAYTPV_OperationsGatewayService();
+
+            datestart = dt.ToString(formatstart, DateTimeFormatInfo.InvariantInfo);
+            dateend = dt.ToString(formatend, DateTimeFormatInfo.InvariantInfo);
+
+            string opSignature = Cryptography.SHA512HashStringForUTF8String(
+                   merchantCode + terminal + password + operation + datestart + dateend
+            );
+
+            Operation[] op = opWsProxy.search_operations(
+                merchantCode,
+                "0",
+                "ASC",
+                "1",
+                terminals,
+                operations,
+                "0",
+                "9999999",
+                "1",
+                datestart,
+                dateend,
+                currency,
+                opSignature,
+                transReference,
+                "1",
+                "1.10"
+            );
+
+            result = op[0].PAYTPV_OPERATION_AUTHCODE;
+            return result;
+        }
+
         /// <summary>
         /// Add a card to PayCOMET.  IMPORTANT !!! This direct input must be activated by PayCOMET.
         /// In default input method card for PCI-DSS compliance should be AddUserUrl or AddUserToken (method used by BankStore JET)
@@ -50,6 +95,7 @@ namespace API_Paycomet_cs.Models
             {
 
                 PAYTPV_BankStoreGatewayService wsProxy = new PAYTPV_BankStoreGatewayService();
+
 
                 string tokenUser, dsErrorId = string.Empty;
                 string idUser = wsProxy.add_user(merchantCode, terminal, pan, expDate, cvv, signature, ipClient, "Test name", out tokenUser, out dsErrorId);
@@ -213,7 +259,8 @@ namespace API_Paycomet_cs.Models
 
                 PAYTPV_BankStoreGatewayService wsProxy = new PAYTPV_BankStoreGatewayService();
 
-                string authCode = wsProxy.execute_purchase(merchantCode,
+
+                string authcode = wsProxy.execute_purchase(merchantCode,
                                                             terminal,
                                                             idPayUser,
                                                             tokenPayUser,
@@ -248,7 +295,7 @@ namespace API_Paycomet_cs.Models
                     result.Data.Add("DS_MERCHANT_AMOUNT", amount);
                     result.Data.Add("DS_MERCHANT_ORDER", transReference);
                     result.Data.Add("DS_MERCHANT_CURRENCY", currency);
-                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", this.operationAuthCode(transReference, currency, "1"));
                     result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
                     result.Data.Add("DS_RESPONSE", dsResponse);
                     result.Result = "OK";
@@ -325,7 +372,7 @@ namespace API_Paycomet_cs.Models
                     result.Data.Add("DS_MERCHANT_AMOUNT", amount);
                     result.Data.Add("DS_MERCHANT_ORDER", transReference);
                     result.Data.Add("DS_MERCHANT_CURRENCY", merchantCurrency);
-                    result.Data.Add("DS_MERCHANT_DCC_SESSION", dsMerchantDccSession); //result.Data.Add("DS_MERCHANT_DCC_SESSION", "dccSessionBorja");
+                    result.Data.Add("DS_MERCHANT_DCC_SESSION", dsMerchantDccSession);
                     result.Data.Add("DS_MERCHANT_DCC_CURRENCY", dsMerchantDccCurrency);
                     result.Data.Add("DS_MERCHANT_DCC_CURRENCYISO3", dsMerchantDccCurrencyIso3);
                     result.Data.Add("DS_MERCHANT_DCC_CURRENCYNAME", dsMerchantDccCurrencyName);
@@ -347,6 +394,7 @@ namespace API_Paycomet_cs.Models
                 result.DsErrorId = "1002";
                 result.Result = "KO";
             }
+
             return result;
         }
 
@@ -480,6 +528,7 @@ namespace API_Paycomet_cs.Models
             cvv = regEx.Replace(cvv, string.Empty);
 
             var signature = Cryptography.SHA512HashStringForUTF8String(merchantCode + pan + cvv + terminal + amount + currency + password);
+
 
             try
             {
@@ -724,6 +773,7 @@ namespace API_Paycomet_cs.Models
 
             try
             {
+
                 PAYTPV_BankStoreGatewayService wsProxy = new PAYTPV_BankStoreGatewayService();
                 string dsErrorId, dsMerchantCardCountry, dsResponse = string.Empty;
 
@@ -746,7 +796,7 @@ namespace API_Paycomet_cs.Models
                     result.Data.Add("DS_MERCHANT_AMOUNT", amount);
                     result.Data.Add("DS_MERCHANT_ORDER", transReference);
                     result.Data.Add("DS_MERCHANT_CURRENCY", currency);
-                    result.Data.Add("DS_MERCHANT_AUTHCODE", authCode);
+                    result.Data.Add("DS_MERCHANT_AUTHCODE", operationAuthCode(transReference, "EUR", "3"));
                     result.Data.Add("DS_MERCHANT_CARDCOUNTRY", dsMerchantCardCountry);
                     result.Data.Add("DS_RESPONSE", dsResponse);
 
@@ -1933,7 +1983,7 @@ namespace API_Paycomet_cs.Models
                     response.DsErrorId = "1011";
                     response.Result = "KO";
                 }
-                                                                                                                                                                                                                                      catch (Exception)
+                catch (Exception)
                 {
                     response.DsErrorId = "1002";
                     response.Result = "KO";
