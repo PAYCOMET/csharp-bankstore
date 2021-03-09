@@ -79,7 +79,7 @@ namespace API_Paycomet_cs.api.paycomet.com
         /// <remarks/>
         public PAYTPV_BankStoreGatewayService()
         {
-            this.Url = "https://10.66.10.12:4443/gateway/xml-bankstore";
+            this.Url = "https://api.paycomet.com/gateway/xml-bankstore";
         }
 
         public PAYTPV_BankStoreGatewayService(string url)
